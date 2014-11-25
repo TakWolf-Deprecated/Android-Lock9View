@@ -38,10 +38,10 @@ public class DrawLineView extends View {
     	super(context);
     }
 
-    public DrawLineView(Context context, List<Node> nodeList) {
+    public DrawLineView(Context context, List<Node> nodeList, int screenWidth) {
         this(context);
         paint = new Paint(Paint.DITHER_FLAG);// 创建一个画笔
-        bitmap = Bitmap.createBitmap(480, 854, Bitmap.Config.ARGB_8888); // 设置位图的宽高
+        bitmap = Bitmap.createBitmap(screenWidth, screenWidth, Bitmap.Config.ARGB_8888); // 设置位图的宽高
         canvas = new Canvas();
         canvas.setBitmap(bitmap);
 

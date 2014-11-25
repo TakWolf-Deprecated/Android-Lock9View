@@ -57,7 +57,7 @@ public class Lock9View extends ViewGroup {
             nodeList.add(point);
         }
         // 初始化一个可以画线的view
-        drawLineView = new DrawLineView(context, nodeList);
+        drawLineView = new DrawLineView(context, nodeList, screenWidth);
         addView(drawLineView);
     }
 
