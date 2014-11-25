@@ -69,4 +69,17 @@ public class Lock9View extends ViewGroup {
         drawLineView.layout(l, t, r, b);
     }
 
+    public void setCallBack(CallBack callBack) {
+    	drawLineView.setCallBack(callBack);
+    }
+
+    /**
+     * 输入完成后回调接口
+     */
+    public interface CallBack {
+
+        public void onFinish(String password);
+
+    }
+
 }

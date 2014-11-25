@@ -3,6 +3,8 @@ package com.takwolf.android.lock9;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.takwolf.android.lock9.Lock9View.CallBack;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -35,7 +37,7 @@ public class DrawLineView extends View {
     private StringBuilder passWordSb;
 
     private DrawLineView(Context context) {
-    	super(context);
+        super(context);
     }
 
     public DrawLineView(Context context, List<Node> nodeList, int screenWidth) {
@@ -160,13 +162,8 @@ public class DrawLineView extends View {
         return null;
     }
 
-    /**
-     * 输入完成后回调接口
-     */
-    public interface CallBack {
-
-        public void onFinish(String password);
-
+    public void setCallBack(CallBack callBack) {
+        this.callBack = callBack;
     }
 
 }
