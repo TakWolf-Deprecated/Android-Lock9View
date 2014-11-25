@@ -38,7 +38,7 @@ public class Lock9View extends ViewGroup {
         DisplayMetrics dm = context.getResources().getDisplayMetrics();
         screenWidth = dm.widthPixels;
         itemWidth = screenWidth / 3;
-        itemPadding = itemWidth / 12;
+        itemPadding = itemWidth / 6;
         //初始化Point数组，3*3
         nodeList = new ArrayList<Node>();
         for (int n = 0; n < 9; n++) {
@@ -73,9 +73,6 @@ public class Lock9View extends ViewGroup {
     	drawLineView.setCallBack(callBack);
     }
 
-    /**
-     * 输入完成后回调接口
-     */
     public interface CallBack {
 
         public void onFinish(String password);

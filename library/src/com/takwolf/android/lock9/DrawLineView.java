@@ -112,7 +112,7 @@ public class DrawLineView extends View {
         case MotionEvent.ACTION_UP :
             //当手指抬起的时候
             //清掉屏幕上所有的线，只画上集合里面保存的线
-            // TODO 解锁完成之后进行回调
+            //解锁完成之后进行回调
             if (callBack != null) {
                 callBack.onFinish(passWordSb.toString());
             }
