@@ -4,19 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.Paint.Style;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Pair;
+import android.view.MotionEvent;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 public class Lock9View extends ViewGroup {
-
-    private int screenWidth; //屏幕尺寸
-    private int itemWidth; //单个尺寸
-    private int itemPadding; //单个内边距
-
-    private List<Node> nodeList; //Point数组
-    private DrawLineView drawLineView; //画线View
 
     public Lock9View(Context context) {
         super(context);
@@ -33,44 +33,155 @@ public class Lock9View extends ViewGroup {
         init(context);
     }
 
-    private void init(Context context) {
-        //初始化尺寸参数
+    private Paint paint;
+    private Bitmap bitmap;
+    private Canvas canvas;
+    private List<Pair<NodeView, NodeView>> lineList;
+    private NodeView currentNode;
+    private StringBuilder pwdSb;
+    private CallBack callBack;
+
+	private void init(Context context) {
+		paint = new Paint(Paint.DITHER_FLAG);
+        paint.setStyle(Style.STROKE);
+        paint.setStrokeWidth(20);
+        paint.setColor(Color.rgb(4, 115, 157));
+        paint.setAntiAlias(true);
+
         DisplayMetrics dm = context.getResources().getDisplayMetrics();
-        screenWidth = dm.widthPixels;
-        itemWidth = screenWidth / 3;
-        itemPadding = itemWidth / 6;
-        //初始化Point数组，3*3
-        nodeList = new ArrayList<Node>();
+        bitmap = Bitmap.createBitmap(dm.widthPixels, dm.widthPixels, Bitmap.Config.ARGB_8888); //屏幕宽度的画笔，足够使用
+        canvas = new Canvas();
+        canvas.setBitmap(bitmap);
+
+		for (int n = 0; n < 9; n++) {
+            NodeView node = new NodeView(context, n + 1);
+            addView(node);
+		}
+		lineList = new ArrayList<Pair<NodeView,NodeView>>();
+		pwdSb = new StringBuilder();
+	}
+
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		setMeasuredDimension(widthMeasureSpec, widthMeasureSpec);
+	}
+
+	@Override
+	protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        if (!changed) {
+        	return;
+        }
+        int width = right - left;
+        int nodeWidth = width / 3;
+        int nodePadding = nodeWidth / 6;
         for (int n = 0; n < 9; n++) {
-            //ImageView
-            ImageView imageView = new ImageView(context);
-            imageView.setBackgroundResource(R.drawable.lock_9_view_node_normal);
-            addView(imageView);
-            //行列和边界
-            int row = n / 3; //行
-            int col = n % 3; //列
-            int left = col * itemWidth + itemPadding;
-            int top = row * itemWidth + itemPadding; 
-            int right = col * itemWidth + itemWidth - itemPadding;
-            int bottom = row * itemWidth + itemWidth - itemPadding;
-            Node point = new Node(left, right, top, bottom, imageView, n+1);
-            nodeList.add(point);
+        	NodeView node = (NodeView) getChildAt(n);
+        	int row = n / 3;
+        	int col = n % 3;
+            int l = col * nodeWidth + nodePadding;
+            int t = row * nodeWidth + nodePadding; 
+            int r = col * nodeWidth + nodeWidth - nodePadding;
+            int b = row * nodeWidth + nodeWidth - nodePadding;
+            node.layout(l, t, r, b);
         }
-        // 初始化一个可以画线的view
-        drawLineView = new DrawLineView(context, nodeList, screenWidth);
-        addView(drawLineView);
+	}
+
+	@Override
+	protected void onDraw(Canvas canvas) {
+        canvas.drawBitmap(bitmap, 0, 0, null);
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		switch (event.getAction()) {
+		case MotionEvent.ACTION_DOWN:
+		case MotionEvent.ACTION_MOVE:
+			NodeView nodeAt = getNodeAt(event.getX(), event.getY());
+			if (nodeAt == null && currentNode == null) { //不需要画线，之前没接触点，当前也没接触点
+				return true;
+			} else { //需要画线
+				clearScreenAndDrawList(); //清除所有图像，如果已有线，则重新绘制
+				if (currentNode == null) { //第一个点 nodeAt不为null
+					currentNode = nodeAt;
+					currentNode.setHighLighted(true);
+					pwdSb.append(currentNode.getNum());
+				} 
+				else if (nodeAt == null || nodeAt.isHighLighted()) { //已经有点了，当前并未碰触新点
+					//以currentNode中心和当前触摸点开始画线
+					canvas.drawLine(currentNode.getCenterX(), currentNode.getCenterY(), event.getX(), event.getY(), paint);
+				} else { //移动到新点
+	                canvas.drawLine(currentNode.getCenterX(), currentNode.getCenterY(), nodeAt.getCenterX(), nodeAt.getCenterY(), paint);// 画线
+	                nodeAt.setHighLighted(true);
+	                Pair<NodeView, NodeView> pair = new Pair<NodeView, NodeView>(currentNode, nodeAt);
+	                lineList.add(pair);
+	                // 赋值当前的node
+	                currentNode = nodeAt;
+	                pwdSb.append(currentNode.getNum());
+				}
+				//通知onDraw重绘
+				invalidate();
+			}
+			break;
+		case MotionEvent.ACTION_UP:
+			//回调结果
+            if (callBack != null) {
+                callBack.onFinish(pwdSb.toString());
+                pwdSb.delete(0, pwdSb.length() - 1);
+            }
+            //清空保存点的集合
+            currentNode = null;
+            lineList.clear();
+            clearScreenAndDrawList();
+            //清除高亮
+            for (int n = 0; n < getChildCount(); n++) {
+            	NodeView node = (NodeView) getChildAt(n);
+                node.setHighLighted(false);
+            }
+            //通知onDraw重绘
+            invalidate();
+			break;
+		default:
+			break;
+		}
+		return true;
+	}
+
+    /**
+     * 清掉屏幕上所有的线，然后画出集合里面的线
+     */
+    private void clearScreenAndDrawList() {
+        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+        for (Pair<NodeView, NodeView> pair : lineList) {
+            canvas.drawLine(pair.first.getCenterX(), pair.first.getCenterY(), pair.second.getCenterX(), pair.second.getCenterY(), paint);// 画线
+        }
+    }
+	
+	/**
+	 * 获取Node，返回null表示在两个结点之间
+	 * @param x
+	 * @param y
+	 * @return 在结点之间，返回null
+	 */
+    private NodeView getNodeAt(float x, float y) {
+        for (int n = 0; n < getChildCount(); n++) {
+            NodeView node = (NodeView) getChildAt(n);
+        	if (!(x >= node.getLeft() && x < node.getRight())) {
+                continue;
+            }
+            if (!(y >= node.getTop() && y < node.getBottom())) {
+                continue;
+            }
+            return node;
+        }
+        return null;
     }
 
-    @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        for (Node node : nodeList) {
-            node.layout();
-        }
-        drawLineView.layout(l, t, r, b);
-    }
-
+	/**
+     * 回调监听器
+     * @param callBack
+     */
     public void setCallBack(CallBack callBack) {
-    	drawLineView.setCallBack(callBack);
+        this.callBack = callBack;
     }
 
 }
