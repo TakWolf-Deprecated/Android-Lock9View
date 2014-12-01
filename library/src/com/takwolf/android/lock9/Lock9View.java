@@ -73,10 +73,4 @@ public class Lock9View extends ViewGroup {
     	drawLineView.setCallBack(callBack);
     }
 
-    public interface CallBack {
-
-        public void onFinish(String password);
-
-    }
-
 }

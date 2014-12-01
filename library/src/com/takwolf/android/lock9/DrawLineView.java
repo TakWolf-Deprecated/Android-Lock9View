@@ -3,8 +3,6 @@ package com.takwolf.android.lock9;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.takwolf.android.lock9.Lock9View.CallBack;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

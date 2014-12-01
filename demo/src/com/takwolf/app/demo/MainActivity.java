@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.takwolf.android.lock9.CallBack;
 import com.takwolf.android.lock9.Lock9View;
-import com.takwolf.android.lock9.Lock9View.CallBack;
 
 public class MainActivity extends Activity {
 
