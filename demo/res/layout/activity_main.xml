@@ -3,12 +3,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
->
+    android:background="@drawable/sky">
 
     <com.takwolf.android.lock9.Lock9View
         android:id="@+id/lock_9_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#ffff6666" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>

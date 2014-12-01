@@ -60,6 +60,8 @@ public class Lock9View extends ViewGroup {
         }
         lineList = new ArrayList<Pair<NodeView,NodeView>>();
         pwdSb = new StringBuilder();
+
+        setWillNotDraw(false); //清除FLAG，否则如果不给background，onDraw不会调用
     }
 
     @Override
@@ -127,7 +129,7 @@ public class Lock9View extends ViewGroup {
             //回调结果
             if (callBack != null) {
                 callBack.onFinish(pwdSb.toString());
-                pwdSb.delete(0, pwdSb.length() - 1);
+                pwdSb.setLength(0); //清空
             }
             //清空保存点的集合
             currentNode = null;
