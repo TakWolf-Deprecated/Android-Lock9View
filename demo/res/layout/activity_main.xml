@@ -2,12 +2,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center"
+>
 
     <com.takwolf.android.lock9.Lock9View
         android:id="@+id/lock_9_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#88000000" />
+        android:layout_height="match_parent"
+        android:background="#ffff6666" />
 
 </LinearLayout>
