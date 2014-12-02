@@ -1,3 +1,19 @@
+/*
+ * Copyright 2015-2016 TakWolf (takwolf.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.takwolf.android.lock9;
 
 import java.util.ArrayList;
@@ -8,8 +24,8 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
 import android.graphics.Paint.Style;
+import android.graphics.PorterDuff;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Pair;
@@ -17,7 +33,25 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+/**
+ * <p>Android-Lock9View</p>
+ * <p>九宫格锁屏视图组件，提供一个九宫格手势屏锁视图功能。</p>
+ * <p>手势处理和连线绘制都有组件内部完成，你只需要绑定这个组件并设置手势完成后的回调对象即可。</p>
+ * <p>请使用 setCallBack(CallBack callBack) 函数设置回调对象。</p>
+ * <p>需要注意的是，不论如何设置，组件的高度永远等于宽度。</p>
+ * @author TakWolf
+ */
 public class Lock9View extends ViewGroup {
+
+    private Paint paint;
+    private Bitmap bitmap;
+    private Canvas canvas;
+
+    private List<Pair<NodeView, NodeView>> lineList;
+    private NodeView currentNode;
+
+    private StringBuilder pwdSb;
+    private CallBack callBack;
 
     public Lock9View(Context context) {
         super(context);
@@ -34,23 +68,15 @@ public class Lock9View extends ViewGroup {
         init(context);
     }
 
-    private Paint paint;
-    private Bitmap bitmap;
-    private Canvas canvas;
-    private List<Pair<NodeView, NodeView>> lineList;
-    private NodeView currentNode;
-    private StringBuilder pwdSb;
-    private CallBack callBack;
-
     private void init(Context context) {
         paint = new Paint(Paint.DITHER_FLAG);
         paint.setStyle(Style.STROKE);
         paint.setStrokeWidth(20);
-        paint.setColor(Color.rgb(4, 115, 157));
+        paint.setColor(Color.rgb(4, 115, 157)); //这里可以更改连线颜色
         paint.setAntiAlias(true);
 
-        DisplayMetrics dm = context.getResources().getDisplayMetrics();
-        bitmap = Bitmap.createBitmap(dm.widthPixels, dm.widthPixels, Bitmap.Config.ARGB_8888); //屏幕宽度的画笔，足够使用
+        DisplayMetrics dm = context.getResources().getDisplayMetrics(); //bitmap的宽度是屏幕宽度，足够使用
+        bitmap = Bitmap.createBitmap(dm.widthPixels, dm.widthPixels, Bitmap.Config.ARGB_8888);
         canvas = new Canvas();
         canvas.setBitmap(bitmap);
 
@@ -61,12 +87,13 @@ public class Lock9View extends ViewGroup {
         lineList = new ArrayList<Pair<NodeView,NodeView>>();
         pwdSb = new StringBuilder();
 
-        setWillNotDraw(false); //清除FLAG，否则如果不给background，onDraw不会调用
+        //清除FLAG，否则 onDraw() 不会调用，原因是 ViewGroup 默认透明背景不需要调用 onDraw()
+        setWillNotDraw(false);
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        setMeasuredDimension(widthMeasureSpec, widthMeasureSpec);
+        setMeasuredDimension(widthMeasureSpec, widthMeasureSpec); //我们让高度等于宽度
     }
 
     @Override
@@ -124,8 +151,12 @@ public class Lock9View extends ViewGroup {
                 //通知onDraw重绘
                 invalidate();
             }
-            break;
+            return true;
         case MotionEvent.ACTION_UP:
+            //还没有触摸到点
+            if (pwdSb.length() <= 0) {
+                return super.onTouchEvent(event);
+            }
             //回调结果
             if (callBack != null) {
                 callBack.onFinish(pwdSb.toString());
@@ -142,11 +173,9 @@ public class Lock9View extends ViewGroup {
             }
             //通知onDraw重绘
             invalidate();
-            break;
-        default:
-            break;
+            return true;
         }
-        return true;
+        return super.onTouchEvent(event);
     }
 
     /**
@@ -160,10 +189,7 @@ public class Lock9View extends ViewGroup {
     }
 
     /**
-     * 获取Node，返回null表示在两个结点之间
-     * @param x
-     * @param y
-     * @return 在结点之间，返回null
+     * 获取Node，返回null表示当前手指在两个Node之间
      */
     private NodeView getNodeAt(float x, float y) {
         for (int n = 0; n < getChildCount(); n++) {
@@ -180,7 +206,7 @@ public class Lock9View extends ViewGroup {
     }
 
     /**
-     * 回调监听器
+     * 设置手势结果的回调监听器
      * @param callBack
      */
     public void setCallBack(CallBack callBack) {
@@ -188,7 +214,7 @@ public class Lock9View extends ViewGroup {
     }
 
     /**
-     * 结点View
+     * 节点描述类
      */
     public class NodeView extends View {
 
@@ -238,7 +264,7 @@ public class Lock9View extends ViewGroup {
     }
 
     /**
-     * 回调监听器
+     * 结果回调监听器接口
      */
     public interface CallBack {
 
