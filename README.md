@@ -29,10 +29,13 @@ lock9View.setCallBack(new CallBack() {
 });
 ```
 
-## Developer ##
+## Author ##
 
-- [takwolf@foxmail.com](mailto:takwolf@foxmail.com)
-- [http://takwolf.com](http://takwolf.com)
+TakWolf
+
+[takwolf@foxmail.com](mailto:takwolf@foxmail.com)
+
+[http://takwolf.com](http://takwolf.com)
 
 ## License ##
 
