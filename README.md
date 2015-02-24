@@ -6,6 +6,10 @@ An Android grid lock screen view with a callback interface. It is very simple to
 
 ![Screenshot](screenshot/screenshot.png)
 
+## Demo ##
+
+[![Lock9View Demo on Google Play Store](http://developer.android.com/images/brand/en_generic_rgb_wo_60.png)](https://play.google.com/store/apps/details?id=com.takwolf.android.lock9)
+
 ## Usage ##
 
 ### Layout ###
