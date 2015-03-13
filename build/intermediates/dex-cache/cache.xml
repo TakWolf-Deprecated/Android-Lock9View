@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="F:\workspace\Android-Lock9View\app\build\intermediates\exploded-aar\Android-Lock9View\lock9view\unspecified\classes.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="961dd522b5416b77f5202414db2259a1d53d90e1">
+        <dex dex="F:\workspace\Android-Lock9View\app\build\intermediates\pre-dexed\debug\classes-15b97b20208a417848dadb8b59d0cbe1712a7061.jar" />
+    </item>
+    <item
+        jar="F:\workspace\Android-Lock9View\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.0.0\classes.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="4e86306289ace4aa0cfec44a05ed2b410d36989d">
+        <dex dex="F:\workspace\Android-Lock9View\app\build\intermediates\pre-dexed\debug\classes-a1d7c33dd5cee39e7fad0517fb0c5ee0bdc64793.jar" />
+    </item>
+    <item
+        jar="E:\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\22.0.0\support-annotations-22.0.0.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="685d0b2c590447e85284ed84712cb363ba04eff8">
+        <dex dex="F:\workspace\Android-Lock9View\app\build\intermediates\pre-dexed\debug\support-annotations-22.0.0-783e10862c8c3255c39ce035e99d8e79f6798efc.jar" />
+    </item>
+    <item
+        jar="F:\workspace\Android-Lock9View\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.0.0\libs\internal_impl-22.0.0.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="b5b92f469d515a13d778900f6d50c03d12f35504">
+        <dex dex="F:\workspace\Android-Lock9View\app\build\intermediates\pre-dexed\debug\internal_impl-22.0.0-e8c2e7e99e80519aef6b6fa2459b8aacb40961e1.jar" />
+    </item>
+    <item
+        jar="F:\workspace\Android-Lock9View\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.0.0\classes.jar"
+        jumboMode="false"
+        revision="22.0.0"
+        sha1="d84409890828e07d344a3b9b1da545dba9897b51">
+        <dex dex="F:\workspace\Android-Lock9View\app\build\intermediates\pre-dexed\debug\classes-212d5ba5a2b4d5f4eb03c433a63db083ccaed0c2.jar" />
+    </item>
+
+</items>
