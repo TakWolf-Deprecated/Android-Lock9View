@@ -108,7 +108,7 @@ public class Lock9View extends ViewGroup {
             int row = n / 3;
             int col = n % 3;
             int l = col * nodeWidth + nodePadding;
-            int t = row * nodeWidth + nodePadding; 
+            int t = row * nodeWidth + nodePadding;
             int r = col * nodeWidth + nodeWidth - nodePadding;
             int b = row * nodeWidth + nodeWidth - nodePadding;
             node.layout(l, t, r, b);
@@ -123,56 +123,56 @@ public class Lock9View extends ViewGroup {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
-        case MotionEvent.ACTION_DOWN:
-        case MotionEvent.ACTION_MOVE:
-            NodeView nodeAt = getNodeAt(event.getX(), event.getY());
-            if (nodeAt == null && currentNode == null) { //不需要画线，之前没接触点，当前也没接触点
+            case MotionEvent.ACTION_DOWN:
+            case MotionEvent.ACTION_MOVE:
+                NodeView nodeAt = getNodeAt(event.getX(), event.getY());
+                if (nodeAt == null && currentNode == null) { //不需要画线，之前没接触点，当前也没接触点
+                    return true;
+                } else { //需要画线
+                    clearScreenAndDrawList(); //清除所有图像，如果已有线，则重新绘制
+                    if (currentNode == null) { //第一个点 nodeAt不为null
+                        currentNode = nodeAt;
+                        currentNode.setHighLighted(true);
+                        pwdSb.append(currentNode.getNum());
+                    }
+                    else if (nodeAt == null || nodeAt.isHighLighted()) { //已经有点了，当前并未碰触新点
+                        //以currentNode中心和当前触摸点开始画线
+                        canvas.drawLine(currentNode.getCenterX(), currentNode.getCenterY(), event.getX(), event.getY(), paint);
+                    } else { //移动到新点
+                        canvas.drawLine(currentNode.getCenterX(), currentNode.getCenterY(), nodeAt.getCenterX(), nodeAt.getCenterY(), paint);// 画线
+                        nodeAt.setHighLighted(true);
+                        Pair<NodeView, NodeView> pair = new Pair<NodeView, NodeView>(currentNode, nodeAt);
+                        lineList.add(pair);
+                        // 赋值当前的node
+                        currentNode = nodeAt;
+                        pwdSb.append(currentNode.getNum());
+                    }
+                    //通知onDraw重绘
+                    invalidate();
+                }
                 return true;
-            } else { //需要画线
-                clearScreenAndDrawList(); //清除所有图像，如果已有线，则重新绘制
-                if (currentNode == null) { //第一个点 nodeAt不为null
-                    currentNode = nodeAt;
-                    currentNode.setHighLighted(true);
-                    pwdSb.append(currentNode.getNum());
-                } 
-                else if (nodeAt == null || nodeAt.isHighLighted()) { //已经有点了，当前并未碰触新点
-                    //以currentNode中心和当前触摸点开始画线
-                    canvas.drawLine(currentNode.getCenterX(), currentNode.getCenterY(), event.getX(), event.getY(), paint);
-                } else { //移动到新点
-                    canvas.drawLine(currentNode.getCenterX(), currentNode.getCenterY(), nodeAt.getCenterX(), nodeAt.getCenterY(), paint);// 画线
-                    nodeAt.setHighLighted(true);
-                    Pair<NodeView, NodeView> pair = new Pair<NodeView, NodeView>(currentNode, nodeAt);
-                    lineList.add(pair);
-                    // 赋值当前的node
-                    currentNode = nodeAt;
-                    pwdSb.append(currentNode.getNum());
+            case MotionEvent.ACTION_UP:
+                //还没有触摸到点
+                if (pwdSb.length() <= 0) {
+                    return super.onTouchEvent(event);
+                }
+                //回调结果
+                if (callBack != null) {
+                    callBack.onFinish(pwdSb.toString());
+                    pwdSb.setLength(0); //清空
+                }
+                //清空保存点的集合
+                currentNode = null;
+                lineList.clear();
+                clearScreenAndDrawList();
+                //清除高亮
+                for (int n = 0; n < getChildCount(); n++) {
+                    NodeView node = (NodeView) getChildAt(n);
+                    node.setHighLighted(false);
                 }
                 //通知onDraw重绘
                 invalidate();
-            }
-            return true;
-        case MotionEvent.ACTION_UP:
-            //还没有触摸到点
-            if (pwdSb.length() <= 0) {
-                return super.onTouchEvent(event);
-            }
-            //回调结果
-            if (callBack != null) {
-                callBack.onFinish(pwdSb.toString());
-                pwdSb.setLength(0); //清空
-            }
-            //清空保存点的集合
-            currentNode = null;
-            lineList.clear();
-            clearScreenAndDrawList();
-            //清除高亮
-            for (int n = 0; n < getChildCount(); n++) {
-                NodeView node = (NodeView) getChildAt(n);
-                node.setHighLighted(false);
-            }
-            //通知onDraw重绘
-            invalidate();
-            return true;
+                return true;
         }
         return super.onTouchEvent(event);
     }
