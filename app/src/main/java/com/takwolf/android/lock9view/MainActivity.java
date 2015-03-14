@@ -42,9 +42,9 @@ public class MainActivity extends ActionBarActivity {
                 new AlertDialog.Builder(this)
                         .setTitle("Android-Lock9View")
                         .setMessage(
-                                "Github : https://github.com/TakWolf/Android-Lock9View\n" +
-                                "Author : TakWolf\n" +
-                                "Email : takwolf@foxmail.com\n" +
+                                "Github : https://github.com/TakWolf/Android-Lock9View\n\n" +
+                                "Author : TakWolf\n\n" +
+                                "Email : takwolf@foxmail.com\n\n" +
                                 "HP : http://takwolf.com")
                         .setPositiveButton("OK", null)
                         .show();
