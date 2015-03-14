@@ -1,5 +1,6 @@
 package com.takwolf.android.lock9view;
 
+import android.app.AlertDialog;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -28,26 +29,29 @@ public class MainActivity extends ActionBarActivity {
         });
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_about:
+                new AlertDialog.Builder(this)
+                        .setTitle("Android-Lock9View")
+                        .setMessage(
+                                "Github : https://github.com/TakWolf/Android-Lock9View\n" +
+                                "Author : TakWolf\n" +
+                                "Email : takwolf@foxmail.com\n" +
+                                "HP : http://takwolf.com")
+                        .setPositiveButton("OK", null)
+                        .show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
+
 }
