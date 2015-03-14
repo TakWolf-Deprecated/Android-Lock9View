@@ -1,4 +1,4 @@
-# Android-Lock9View #
+# Android-Lock9View [ ![Download](https://api.bintray.com/packages/takwolf/maven/Android-Lock9View/images/download.svg) ](https://bintray.com/takwolf/maven/Android-Lock9View/_latestVersion) #
 
 An Android grid lock screen view with a callback interface. It is very simple to use.
 
