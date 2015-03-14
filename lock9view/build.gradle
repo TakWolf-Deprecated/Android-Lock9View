@@ -88,8 +88,8 @@ bintray {
     key = properties.getProperty("bintray.apikey")
     configurations = ['archives']
     pkg {
-        repo = "maven"
-        name = "Android-Lock9View"	// #CONFIG# project name in jcenter
+        repo = "maven"              // #CONFIG# repositories name
+        name = "Android-Lock9View"	// #CONFIG# project name
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = ["Apache-2.0"]
