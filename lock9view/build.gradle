@@ -3,16 +3,16 @@ apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
 // This is the library version used when deploying the artifact
-version = "0.0.1"  // #CONFIG#
+version = "0.0.2"  // #CONFIG#
 
 android {
     compileSdkVersion 22
-    buildToolsVersion "22.0.0"
+    buildToolsVersion "22.0.1"
 
     defaultConfig {
         minSdkVersion 5
         targetSdkVersion 22
-        versionCode 1
+        versionCode 2
         versionName version
     }
     buildTypes {
@@ -63,20 +63,24 @@ install {
         }
     }
 }
+
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
     classifier = 'sources'
 }
+
 task javadoc(type: Javadoc) {
     source = android.sourceSets.main.java.srcDirs
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
 }
+
 task javadocJar(type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
     from javadoc.destinationDir
 }
+
 artifacts {
-    archives javadocJar
+    //archives javadocJar // TODO 不打包Javadoc
     archives sourcesJar
 }
 
