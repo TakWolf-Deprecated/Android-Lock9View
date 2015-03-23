@@ -15,7 +15,7 @@ An Android grid lock screen view with a callback interface. It is very simple to
 ### Gradle ###
 
 ```gradle
-compile 'com.takwolf.android:lock9view:0.0.1'
+compile 'com.takwolf.android:lock9view:0.0.2'
 ```
 
 ### Layout ###
@@ -24,7 +24,12 @@ compile 'com.takwolf.android:lock9view:0.0.1'
 <com.takwolf.android.lock9.Lock9View
     android:id="@+id/lock_9_view"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" />
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    app:nodeSrc="@mipmap/lock_9_view_node_normal"
+    app:nodeOnSrc="@mipmap/lock_9_view_node_highlighted"
+    app:lineColor="#ff006699"
+    app:lineWidth="8dp" />
 ```
 
 ### Activity ###
