@@ -19,12 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Pair;
@@ -52,35 +54,52 @@ public class Lock9View extends ViewGroup {
     private StringBuilder pwdSb;
     private CallBack callBack;
 
+    private Drawable nodeSrc;
+    private Drawable nodeOnSrc;
+
     public Lock9View(Context context) {
-        super(context);
-        init(context);
+        this(context, null);
     }
 
     public Lock9View(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context);
+        this(context, attrs, 0);
     }
 
     public Lock9View(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        init(context);
+        this(context, attrs, defStyleAttr, 0);
     }
 
-    private void init(Context context) {
+    public Lock9View(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr); // TODO api 21
+        initFromAttributes(attrs, defStyleAttr);
+    }
+
+    private void initFromAttributes(AttributeSet attrs, int defStyleAttr) {
+        final TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.Lock9View, defStyleAttr, 0);
+
+        nodeSrc = a.getDrawable(R.styleable.Lock9View_nodeSrc);
+        nodeOnSrc = a.getDrawable(R.styleable.Lock9View_nodeOnSrc);
+        int lineColor = Color.argb(0, 0, 0, 0);
+        lineColor = a.getColor(R.styleable.Lock9View_lineColor, lineColor);
+        float lineWidth = 20.0f;
+        lineWidth = a.getDimension(R.styleable.Lock9View_lineWidth, lineWidth);
+
+        a.recycle();
+
+
         paint = new Paint(Paint.DITHER_FLAG);
         paint.setStyle(Style.STROKE);
-        paint.setStrokeWidth(20);
-        paint.setColor(Color.rgb(4, 115, 157)); // 这里可以更改连线颜色
+        paint.setStrokeWidth(lineWidth);
+        paint.setColor(lineColor);
         paint.setAntiAlias(true);
 
-        DisplayMetrics dm = context.getResources().getDisplayMetrics(); // bitmap的宽度是屏幕宽度，足够使用
+        DisplayMetrics dm = getResources().getDisplayMetrics(); // bitmap的宽度是屏幕宽度，足够使用
         bitmap = Bitmap.createBitmap(dm.widthPixels, dm.widthPixels, Bitmap.Config.ARGB_8888);
         canvas = new Canvas();
         canvas.setBitmap(bitmap);
 
         for (int n = 0; n < 9; n++) {
-            NodeView node = new NodeView(context, n + 1);
+            NodeView node = new NodeView(getContext(), n + 1);
             addView(node);
         }
         lineList = new ArrayList<Pair<NodeView,NodeView>>();
@@ -228,7 +247,11 @@ public class Lock9View extends ViewGroup {
             this(context);
             this.num = num;
             highLighted = false;
-            setBackgroundResource(R.drawable.lock_9_view_node_normal);
+            if (nodeSrc == null) {
+                setBackgroundResource(0);
+            } else {
+                setBackgroundDrawable(nodeSrc);
+            }
         }
 
         public boolean isHighLighted() {
@@ -238,9 +261,17 @@ public class Lock9View extends ViewGroup {
         public void setHighLighted(boolean highLighted) {
             this.highLighted = highLighted;
             if (highLighted) {
-                setBackgroundResource(R.drawable.lock_9_view_node_highlighted);
+                if (nodeOnSrc == null) {
+                    setBackgroundResource(0);
+                } else {
+                    setBackgroundDrawable(nodeOnSrc);
+                }
             } else {
-                setBackgroundResource(R.drawable.lock_9_view_node_normal);
+                if (nodeSrc == null) {
+                    setBackgroundResource(0);
+                } else {
+                    setBackgroundDrawable(nodeSrc);
+                }
             }
         }
 
