@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         app:nodeSrc="@mipmap/lock_9_view_node_normal"
-        app:nodeOnSrc="@mipmap/lock_9_view_node_normal" />
+        app:nodeOnSrc="@mipmap/lock_9_view_node_highlighted"
+        app:lineColor="@color/#ff0000ff" />
 
 </FrameLayout>
