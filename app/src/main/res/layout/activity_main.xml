@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ff222233">
+    android:background="#ff444466">
 
     <com.takwolf.android.lock9.Lock9View
         android:id="@+id/lock_9_view"
