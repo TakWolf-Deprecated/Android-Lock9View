@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import com.takwolf.android.lock9.Lock9View;
 
-
 public class MainActivity extends ActionBarActivity {
 
     private Lock9View lock9View;

@@ -80,7 +80,7 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 }
 
 artifacts {
-    //archives javadocJar // TODO 不打包Javadoc
+    archives javadocJar
     archives sourcesJar
 }
 
