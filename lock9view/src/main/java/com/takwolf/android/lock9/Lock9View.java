@@ -78,12 +78,12 @@ public class Lock9View extends ViewGroup {
     private void initFromAttributes(AttributeSet attrs, int defStyleAttr) {
         final TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.Lock9View, defStyleAttr, 0);
 
-        nodeSrc = a.getDrawable(R.styleable.Lock9View_nodeSrc);
-        nodeOnSrc = a.getDrawable(R.styleable.Lock9View_nodeOnSrc);
+        nodeSrc = a.getDrawable(R.styleable.Lock9View_lock9_nodeSrc);
+        nodeOnSrc = a.getDrawable(R.styleable.Lock9View_lock9_nodeOnSrc);
         int lineColor = Color.argb(0, 0, 0, 0);
-        lineColor = a.getColor(R.styleable.Lock9View_lineColor, lineColor);
+        lineColor = a.getColor(R.styleable.Lock9View_lock9_lineColor, lineColor);
         float lineWidth = 20.0f;
-        lineWidth = a.getDimension(R.styleable.Lock9View_lineWidth, lineWidth);
+        lineWidth = a.getDimension(R.styleable.Lock9View_lock9_lineWidth, lineWidth);
 
         a.recycle();
 
