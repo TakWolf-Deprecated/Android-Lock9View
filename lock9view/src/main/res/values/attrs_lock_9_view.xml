@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="Lock9View">
-        <attr name="nodeSrc" format="color|reference" />
-        <attr name="nodeOnSrc" format="color|reference" />
-        <attr name="lineColor" format="color" />
-        <attr name="lineWidth" format="dimension" />
+        <attr name="lock9_nodeSrc" format="color|reference" />
+        <attr name="lock9_nodeOnSrc" format="color|reference" />
+        <attr name="lock9_lineColor" format="color" />
+        <attr name="lock9_lineWidth" format="dimension" />
     </declare-styleable>
 </resources>
