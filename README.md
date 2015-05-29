@@ -32,6 +32,21 @@ compile 'com.takwolf.android:lock9view:0.0.4'
     app:lock9_lineWidth="8dp" />
 ```
 
+<b color="#ff0000">Attention!!</b>
+
+If you want to update library reference from version 0.0.3 or earlier,
+you should add a prefix "lock9_" to the Lock9View attributes in your layout, like :
+
+    nodeSrc -> lock9_nodeSrc
+
+This way to solve the resources error :
+
+    "Attribute "nodeSrc" has already been defined"
+
+if another library has defined the same attributes.
+
+Thanks for <b>@IGZpablocanamares</b>.
+
 ### Activity ###
 
 ```java
