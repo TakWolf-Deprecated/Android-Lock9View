@@ -32,7 +32,7 @@ compile 'com.takwolf.android:lock9view:0.0.4'
     app:lock9_lineWidth="8dp" />
 ```
 
-<span style="color:red">Attention!!!</span>
+<b style="color:red">Attention!!!</b>
 
 If you want to update library reference from version 0.0.3 or earlier,
 you should add a prefix "lock9_" to the Lock9View attributes in your layout, like :
