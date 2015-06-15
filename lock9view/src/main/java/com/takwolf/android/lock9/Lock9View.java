@@ -35,16 +35,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * <p>Android-Lock9View</p>
- * <p>九宫格锁屏视图组件，提供一个九宫格手势屏锁视图功能。</p>
- * <p>手势处理和连线绘制都有组件内部完成，你只需要绑定这个组件并设置手势完成后的回调对象即可。</p>
- * <p>请使用 setCallBack(CallBack callBack) 函数设置回调对象。</p>
- * <p>需要注意的是，不论如何设置，组件的高度永远等于宽度。</p>
- * @author TakWolf (<a href="mailto:takwolf@foxmail.com">takwolf@foxmail.com</a>)
- */
 public class Lock9View extends ViewGroup {
 
+    // TODO 其实可以不需要独立的画布
     private Paint paint;
     private Bitmap bitmap;
     private Canvas canvas;
