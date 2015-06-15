@@ -27,8 +27,8 @@ An Android grid lock screen view with a callback interface.
         app:lock9_nodeOnSrc="@drawable/lock_9_view_node_highlighted"
         app:lock9_lineColor="#ff006699"
         app:lock9_lineWidth="8dp"
-        app:lock9_padding="48dp"
-        app:lock9_spacing="48dp" />
+        app:lock9_padding="32dp"
+        app:lock9_spacing="32dp" />
 
 ### Explain ###
 
