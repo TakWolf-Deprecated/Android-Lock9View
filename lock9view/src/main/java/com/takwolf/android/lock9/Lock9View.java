@@ -52,12 +52,36 @@ public class Lock9View extends ViewGroup {
     private List<Pair<NodeView, NodeView>> lineList;
     private NodeView currentNode;
 
-    private StringBuilder pwdSb;
-    private CallBack callBack;
+    private StringBuilder passwordBuilder = new StringBuilder();
 
+    /**
+     * 自定义属性列表
+     */
     private Drawable nodeSrc;
     private Drawable nodeOnSrc;
+    private int lineColor;
+    private float lineWidth;
+    private float padding;
+    private float spacing;
 
+    /**
+     * 结果回调监听器接口
+     */
+    private CallBack callBack;
+
+    public interface CallBack {
+
+        public void onFinish(String password);
+
+    }
+
+    public void setCallBack(CallBack callBack) {
+        this.callBack = callBack;
+    }
+
+    /**
+     * 构造函数
+     */
     public Lock9View(Context context) {
         this(context, null);
     }
@@ -75,19 +99,23 @@ public class Lock9View extends ViewGroup {
         initFromAttributes(attrs, defStyleAttr);
     }
 
+    /**
+     * 初始化
+     */
     private void initFromAttributes(AttributeSet attrs, int defStyleAttr) {
+        // 初始化属性
         final TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.Lock9View, defStyleAttr, 0);
 
         nodeSrc = a.getDrawable(R.styleable.Lock9View_lock9_nodeSrc);
         nodeOnSrc = a.getDrawable(R.styleable.Lock9View_lock9_nodeOnSrc);
-        int lineColor = Color.argb(0, 0, 0, 0);
-        lineColor = a.getColor(R.styleable.Lock9View_lock9_lineColor, lineColor);
-        float lineWidth = 20.0f;
-        lineWidth = a.getDimension(R.styleable.Lock9View_lock9_lineWidth, lineWidth);
+        lineColor = a.getColor(R.styleable.Lock9View_lock9_lineColor, Color.argb(0, 0, 0, 0));
+        lineWidth = a.getDimension(R.styleable.Lock9View_lock9_lineWidth, 0);
+        padding = a.getDimension(R.styleable.Lock9View_lock9_padding, 0);
+        spacing = a.getDimension(R.styleable.Lock9View_lock9_spacing, 0);
 
         a.recycle();
 
-
+        // TODO 初始化画布-这里可以改进
         paint = new Paint(Paint.DITHER_FLAG);
         paint.setStyle(Style.STROKE);
         paint.setStrokeWidth(lineWidth);
@@ -99,12 +127,12 @@ public class Lock9View extends ViewGroup {
         canvas = new Canvas();
         canvas.setBitmap(bitmap);
 
+        // 构建node
         for (int n = 0; n < 9; n++) {
             NodeView node = new NodeView(getContext(), n + 1);
             addView(node);
         }
         lineList = new ArrayList<Pair<NodeView,NodeView>>();
-        pwdSb = new StringBuilder();
 
         // 清除FLAG，否则 onDraw() 不会调用，原因是 ViewGroup 默认透明背景不需要调用 onDraw()
         setWillNotDraw(false);
@@ -153,7 +181,7 @@ public class Lock9View extends ViewGroup {
                     if (currentNode == null) { // 第一个点 nodeAt不为null
                         currentNode = nodeAt;
                         currentNode.setHighLighted(true);
-                        pwdSb.append(currentNode.getNum());
+                        passwordBuilder.append(currentNode.getNum());
                     }
                     else if (nodeAt == null || nodeAt.isHighLighted()) { // 已经有点了，当前并未碰触新点
                         // 以currentNode中心和当前触摸点开始画线
@@ -165,7 +193,7 @@ public class Lock9View extends ViewGroup {
                         lineList.add(pair);
                         // 赋值当前的node
                         currentNode = nodeAt;
-                        pwdSb.append(currentNode.getNum());
+                        passwordBuilder.append(currentNode.getNum());
                     }
                     // 通知onDraw重绘
                     invalidate();
@@ -173,13 +201,13 @@ public class Lock9View extends ViewGroup {
                 return true;
             case MotionEvent.ACTION_UP:
                 // 还没有触摸到点
-                if (pwdSb.length() <= 0) {
+                if (passwordBuilder.length() <= 0) {
                     return super.onTouchEvent(event);
                 }
                 // 回调结果
                 if (callBack != null) {
-                    callBack.onFinish(pwdSb.toString());
-                    pwdSb.setLength(0); // 清空
+                    callBack.onFinish(passwordBuilder.toString());
+                    passwordBuilder.setLength(0); // 清空
                 }
                 // 清空保存点的集合
                 currentNode = null;
@@ -225,34 +253,17 @@ public class Lock9View extends ViewGroup {
     }
 
     /**
-     * 设置手势结果的回调监听器
-     * @param callBack
+     * 结点描述类
      */
-    public void setCallBack(CallBack callBack) {
-        this.callBack = callBack;
-    }
-
-    /**
-     * 节点描述类
-     */
-    public class NodeView extends View {
+    private class NodeView extends View {
 
         private int num;
-        private boolean highLighted;
-
-        private NodeView(Context context) {
-            super(context);
-        }
+        private boolean highLighted = false;
 
         public NodeView(Context context, int num) {
-            this(context);
+            super(context);
             this.num = num;
-            highLighted = false;
-            if (nodeSrc == null) {
-                setBackgroundResource(0);
-            } else {
-                setBackgroundDrawable(nodeSrc);
-            }
+            setBackgroundDrawable(nodeSrc);
         }
 
         public boolean isHighLighted() {
@@ -260,19 +271,9 @@ public class Lock9View extends ViewGroup {
         }
 
         public void setHighLighted(boolean highLighted) {
-            this.highLighted = highLighted;
-            if (highLighted) {
-                if (nodeOnSrc == null) {
-                    setBackgroundResource(0);
-                } else {
-                    setBackgroundDrawable(nodeOnSrc);
-                }
-            } else {
-                if (nodeSrc == null) {
-                    setBackgroundResource(0);
-                } else {
-                    setBackgroundDrawable(nodeSrc);
-                }
+            if (this.highLighted != highLighted) {
+                this.highLighted = highLighted;
+                setBackgroundDrawable(highLighted ? nodeOnSrc : nodeSrc);
             }
         }
 
@@ -287,19 +288,6 @@ public class Lock9View extends ViewGroup {
         public int getNum() {
             return num;
         }
-
-        public void setNum(int num) {
-            this.num = num;
-        }
-
-    }
-
-    /**
-     * 结果回调监听器接口
-     */
-    public interface CallBack {
-
-        public void onFinish(String password);
 
     }
 
