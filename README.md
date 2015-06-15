@@ -30,6 +30,10 @@ An Android grid lock screen view with a callback interface.
         app:lock9_padding="48dp"
         app:lock9_spacing="48dp" />
 
+### Explain ###
+
+![Explain](screenshot/explain.png)
+
 <b style="color:red">Attention!!!</b>
 
 If you want to update library reference from version 0.0.4 or earlier,
