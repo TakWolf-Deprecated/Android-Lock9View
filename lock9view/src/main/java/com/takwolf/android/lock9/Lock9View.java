@@ -52,6 +52,9 @@ public class Lock9View extends ViewGroup {
     private List<Pair<NodeView, NodeView>> lineList;
     private NodeView currentNode;
 
+    /**
+     * 密码构建器
+     */
     private StringBuilder passwordBuilder = new StringBuilder();
 
     /**
@@ -145,21 +148,20 @@ public class Lock9View extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        if (!changed) {
-            return;
-        }
-        int width = right - left;
-        int nodeWidth = width / 3;
-        int nodePadding = nodeWidth / 6;
-        for (int n = 0; n < 9; n++) {
-            NodeView node = (NodeView) getChildAt(n);
-            int row = n / 3;
-            int col = n % 3;
-            int l = col * nodeWidth + nodePadding;
-            int t = row * nodeWidth + nodePadding;
-            int r = col * nodeWidth + nodeWidth - nodePadding;
-            int b = row * nodeWidth + nodeWidth - nodePadding;
-            node.layout(l, t, r, b);
+        if (changed) {
+            int nodeWidth = (int) ((right - left - padding * 2 - spacing * 2) / 3);
+            for (int n = 0; n < 9; n++) {
+                NodeView node = (NodeView) getChildAt(n);
+                // 获取3*3宫格内坐标
+                int row = n / 3;
+                int col = n % 3;
+                // 计算实际的坐标，要包括内边距和分割边距
+                int l = (int) (padding + col * (nodeWidth + spacing));
+                int t = (int) (padding + row * (nodeWidth + spacing));
+                int r = l + nodeWidth;
+                int b = t + nodeWidth;
+                node.layout(l, t, r, b);
+            }
         }
     }
 
