@@ -168,7 +168,7 @@ public class Lock9View extends ViewGroup {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_MOVE:
-                x = event.getX();
+                x = event.getX(); // 这里要实时记录手指的坐标
                 y = event.getY();
                 NodeView nodeAt = getNodeAt(x, y);
                 if (currentNode == null) { // 之前没有点
