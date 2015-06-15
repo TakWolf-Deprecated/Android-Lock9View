@@ -3,7 +3,7 @@ apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
 // This is the library version used when deploying the artifact
-version = "0.0.4"  // #CONFIG#
+version = "0.0.5"  // #CONFIG#
 
 android {
     compileSdkVersion 22
@@ -12,7 +12,7 @@ android {
     defaultConfig {
         minSdkVersion 5
         targetSdkVersion 22
-        versionCode 3
+        versionCode 5
         versionName version
     }
     buildTypes {
