@@ -16,39 +16,31 @@
 
 package com.takwolf.android.lock9;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Lock9View extends ViewGroup {
 
-    // TODO 其实可以不需要独立的画布
-    private Paint paint;
-    private Bitmap bitmap;
-    private Canvas canvas;
-
-    private List<Pair<NodeView, NodeView>> lineList;
-    private NodeView currentNode;
-
     /**
-     * 密码构建器
+     * 节点相关定义
      */
-    private StringBuilder passwordBuilder = new StringBuilder();
+    private List<Pair<NodeView, NodeView>> lineList = new ArrayList<Pair<NodeView,NodeView>>(); // 已经连线的节点链表
+    private NodeView currentNode; // 最近一个点亮的节点，null表示还没有点亮任何节点
+    private float x; // 当前手指坐标x
+    private float y; // 当前手指坐标y
 
     /**
      * 自定义属性列表
@@ -57,8 +49,18 @@ public class Lock9View extends ViewGroup {
     private Drawable nodeOnSrc;
     private int lineColor;
     private float lineWidth;
-    private float padding;
-    private float spacing;
+    private float padding; // 内边距
+    private float spacing; // 节点间隔距离
+
+    /**
+     * 画线用的画笔
+     */
+    private Paint paint;
+
+    /**
+     * 密码构建器
+     */
+    private StringBuilder passwordBuilder = new StringBuilder();
 
     /**
      * 结果回调监听器接口
@@ -91,7 +93,7 @@ public class Lock9View extends ViewGroup {
     }
 
     public Lock9View(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr); // TODO api 21
+        super(context, attrs, defStyleAttr); // TODO 这个构造函数在api21以上版本才可用
         initFromAttributes(attrs, defStyleAttr);
     }
 
@@ -99,7 +101,7 @@ public class Lock9View extends ViewGroup {
      * 初始化
      */
     private void initFromAttributes(AttributeSet attrs, int defStyleAttr) {
-        // 初始化属性
+        // 获取定义的属性
         final TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.Lock9View, defStyleAttr, 0);
 
         nodeSrc = a.getDrawable(R.styleable.Lock9View_lock9_nodeSrc);
@@ -111,34 +113,34 @@ public class Lock9View extends ViewGroup {
 
         a.recycle();
 
-        // TODO 初始化画布-这里可以改进
+        // 初始化画笔
         paint = new Paint(Paint.DITHER_FLAG);
         paint.setStyle(Style.STROKE);
         paint.setStrokeWidth(lineWidth);
         paint.setColor(lineColor);
-        paint.setAntiAlias(true);
-
-        DisplayMetrics dm = getResources().getDisplayMetrics(); // bitmap的宽度是屏幕宽度，足够使用
-        bitmap = Bitmap.createBitmap(dm.widthPixels, dm.widthPixels, Bitmap.Config.ARGB_8888);
-        canvas = new Canvas();
-        canvas.setBitmap(bitmap);
+        paint.setAntiAlias(true); // 抗锯齿
 
         // 构建node
         for (int n = 0; n < 9; n++) {
             NodeView node = new NodeView(getContext(), n + 1);
             addView(node);
         }
-        lineList = new ArrayList<Pair<NodeView,NodeView>>();
 
         // 清除FLAG，否则 onDraw() 不会调用，原因是 ViewGroup 默认透明背景不需要调用 onDraw()
         setWillNotDraw(false);
     }
 
+    /**
+     * TODO 我们让高度等于宽度 - 这么使用不清楚是否正确
+     */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        setMeasuredDimension(widthMeasureSpec, widthMeasureSpec); // 我们让高度等于宽度
+        setMeasuredDimension(widthMeasureSpec, widthMeasureSpec);
     }
 
+    /**
+     * 在这里进行node的布局
+     */
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         if (changed) {
@@ -158,31 +160,26 @@ public class Lock9View extends ViewGroup {
         }
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        canvas.drawBitmap(bitmap, 0, 0, null);
-    }
-
+    /**
+     * 在这里处理手势
+     */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
             case MotionEvent.ACTION_MOVE:
-                NodeView nodeAt = getNodeAt(event.getX(), event.getY());
-                if (nodeAt == null && currentNode == null) { // 不需要画线，之前没接触点，当前也没接触点
-                    return true;
-                } else { // 需要画线
-                    clearScreenAndDrawList(); // 清除所有图像，如果已有线，则重新绘制
-                    if (currentNode == null) { // 第一个点 nodeAt不为null
+                x = event.getX(); // 这里要实时记录手指的坐标
+                y = event.getY();
+                NodeView nodeAt = getNodeAt(x, y);
+                if (currentNode == null) { // 之前没有点
+                    if (nodeAt != null) { // 第一个点
                         currentNode = nodeAt;
                         currentNode.setHighLighted(true);
                         passwordBuilder.append(currentNode.getNum());
+                        invalidate();  // 通知重绘
                     }
-                    else if (nodeAt == null || nodeAt.isHighLighted()) { // 已经有点了，当前并未碰触新点
-                        // 以currentNode中心和当前触摸点开始画线
-                        canvas.drawLine(currentNode.getCenterX(), currentNode.getCenterY(), event.getX(), event.getY(), paint);
-                    } else { // 移动到新点
-                        canvas.drawLine(currentNode.getCenterX(), currentNode.getCenterY(), nodeAt.getCenterX(), nodeAt.getCenterY(), paint);// 画线
+                } else { // 之前有点-所以怎么样都要重绘
+                    if (nodeAt != null && !nodeAt.isHighLighted()) { // 当前碰触了新点
                         nodeAt.setHighLighted(true);
                         Pair<NodeView, NodeView> pair = new Pair<NodeView, NodeView>(currentNode, nodeAt);
                         lineList.add(pair);
@@ -190,48 +187,49 @@ public class Lock9View extends ViewGroup {
                         currentNode = nodeAt;
                         passwordBuilder.append(currentNode.getNum());
                     }
-                    // 通知onDraw重绘
+                    invalidate(); // 通知重绘
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                if (passwordBuilder.length() > 0) { // 有触摸点
+                    // 回调结果
+                    if (callBack != null) {
+                        callBack.onFinish(passwordBuilder.toString());
+                    }
+                    // 清空状态
+                    lineList.clear();
+                    currentNode = null;
+                    passwordBuilder.setLength(0);
+                    // 清除高亮
+                    for (int n = 0; n < getChildCount(); n++) {
+                        NodeView node = (NodeView) getChildAt(n);
+                        node.setHighLighted(false);
+                    }
+                    // 通知重绘
                     invalidate();
                 }
-                return true;
-            case MotionEvent.ACTION_UP:
-                // 还没有触摸到点
-                if (passwordBuilder.length() <= 0) {
-                    return super.onTouchEvent(event);
-                }
-                // 回调结果
-                if (callBack != null) {
-                    callBack.onFinish(passwordBuilder.toString());
-                    passwordBuilder.setLength(0); // 清空
-                }
-                // 清空保存点的集合
-                currentNode = null;
-                lineList.clear();
-                clearScreenAndDrawList();
-                // 清除高亮
-                for (int n = 0; n < getChildCount(); n++) {
-                    NodeView node = (NodeView) getChildAt(n);
-                    node.setHighLighted(false);
-                }
-                // 通知onDraw重绘
-                invalidate();
-                return true;
+                break;
         }
-        return super.onTouchEvent(event);
+        return true;
     }
 
     /**
-     * 清掉屏幕上所有的线，然后画出集合里面的线
+     * 系统绘制回调-主要绘制连线
      */
-    private void clearScreenAndDrawList() {
-        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
+    @Override
+    protected void onDraw(Canvas canvas) {
+        // 先绘制已有的连线
         for (Pair<NodeView, NodeView> pair : lineList) {
             canvas.drawLine(pair.first.getCenterX(), pair.first.getCenterY(), pair.second.getCenterX(), pair.second.getCenterY(), paint);
         }
+        // 如果已经有点亮的点，则在点亮点和手指位置之间绘制连线
+        if (currentNode != null) {
+            canvas.drawLine(currentNode.getCenterX(), currentNode.getCenterY(), x, y, paint);
+        }
     }
 
     /**
-     * 获取Node，返回null表示当前手指在两个Node之间
+     * 获取给定坐标点的Node，返回null表示当前手指在两个Node之间
      */
     private NodeView getNodeAt(float x, float y) {
         for (int n = 0; n < getChildCount(); n++) {

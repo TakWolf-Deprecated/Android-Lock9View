@@ -14,7 +14,7 @@
         app:lock9_nodeOnSrc="@drawable/lock_9_view_node_highlighted"
         app:lock9_lineColor="#ff006699"
         app:lock9_lineWidth="8dp"
-        app:lock9_padding="32dp"
-        app:lock9_spacing="32dp" />
+        app:lock9_padding="28dp"
+        app:lock9_spacing="28dp" />
 
 </FrameLayout>
