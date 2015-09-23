@@ -132,11 +132,54 @@ public class Lock9View extends ViewGroup {
 
     /**
      * TODO 我们让高度等于宽度 - 这么使用不清楚是否正确
+     * 测量控件高度--否则在android2.3上onLayout()方法的right值不对
      */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        setMeasuredDimension(widthMeasureSpec, widthMeasureSpec);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+		int measureWidth = measureWidth(widthMeasureSpec);
+		int measureHeight = measureHeight(heightMeasureSpec);
+		measureChildren(widthMeasureSpec, heightMeasureSpec);
+		setMeasuredDimension(measureWidth, measureHeight);
     }
+
+    /**
+	 * 测量宽度
+	 * 
+	 * @param pWidthMeasureSpec
+	 * @return
+	 */
+	private int measureWidth(int pWidthMeasureSpec) {
+		int result = 0;
+		int widthMode = MeasureSpec.getMode(pWidthMeasureSpec);// 得到模式
+		int widthSize = MeasureSpec.getSize(pWidthMeasureSpec);// 得到尺寸
+		switch (widthMode) {
+		case MeasureSpec.AT_MOST:
+		case MeasureSpec.EXACTLY:
+			result = widthSize;
+			break;
+		}
+		return result;
+	}
+
+	/**
+	 * 测量高度
+	 * 
+	 * @param pHeightMeasureSpec
+	 * @return
+	 */
+	private int measureHeight(int pHeightMeasureSpec) {
+		int result = 0;
+		int heightMode = MeasureSpec.getMode(pHeightMeasureSpec);
+		int heightSize = MeasureSpec.getSize(pHeightMeasureSpec);
+		switch (heightMode) {
+		case MeasureSpec.AT_MOST:
+		case MeasureSpec.EXACTLY:
+			result = heightSize;
+			break;
+		}
+		return result;
+	}
 
     /**
      * 在这里进行node的布局
