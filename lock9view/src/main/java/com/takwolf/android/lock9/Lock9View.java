@@ -16,6 +16,7 @@
 
 package com.takwolf.android.lock9;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -23,6 +24,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.view.MotionEvent;
@@ -37,7 +39,7 @@ public class Lock9View extends ViewGroup {
     /**
      * 节点相关定义
      */
-    private List<Pair<NodeView, NodeView>> lineList = new ArrayList<Pair<NodeView,NodeView>>(); // 已经连线的节点链表
+    private List<Pair<NodeView, NodeView>> lineList = new ArrayList<>(); // 已经连线的节点链表
     private NodeView currentNode; // 最近一个点亮的节点，null表示还没有点亮任何节点
     private float x; // 当前手指坐标x
     private float y; // 当前手指坐标y
@@ -69,7 +71,7 @@ public class Lock9View extends ViewGroup {
 
     public interface CallBack {
 
-        public void onFinish(String password);
+        void onFinish(String password);
 
     }
 
@@ -80,20 +82,25 @@ public class Lock9View extends ViewGroup {
     /**
      * 构造函数
      */
+
     public Lock9View(Context context) {
-        this(context, null);
+        super(context);
+        initFromAttributes(null, 0);
     }
 
     public Lock9View(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context, attrs);
+        initFromAttributes(attrs, 0);
     }
 
     public Lock9View(Context context, AttributeSet attrs, int defStyleAttr) {
-        this(context, attrs, defStyleAttr, 0);
+        super(context, attrs, defStyleAttr);
+        initFromAttributes(attrs, defStyleAttr);
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public Lock9View(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr); // TODO 这个构造函数在api21以上版本才可用
+        super(context, attrs, defStyleAttr, defStyleRes);
         initFromAttributes(attrs, defStyleAttr);
     }
 
@@ -181,7 +188,7 @@ public class Lock9View extends ViewGroup {
                 } else { // 之前有点-所以怎么样都要重绘
                     if (nodeAt != null && !nodeAt.isHighLighted()) { // 当前碰触了新点
                         nodeAt.setHighLighted(true);
-                        Pair<NodeView, NodeView> pair = new Pair<NodeView, NodeView>(currentNode, nodeAt);
+                        Pair<NodeView, NodeView> pair = new Pair<>(currentNode, nodeAt);
                         lineList.add(pair);
                         // 赋值当前的node
                         currentNode = nodeAt;
@@ -246,13 +253,14 @@ public class Lock9View extends ViewGroup {
     }
 
     /**
-     * 结点描述类
+     * 节点描述类
      */
     private class NodeView extends View {
 
         private int num;
         private boolean highLighted = false;
 
+        @SuppressWarnings("deprecation")
         public NodeView(Context context, int num) {
             super(context);
             this.num = num;
@@ -263,6 +271,7 @@ public class Lock9View extends ViewGroup {
             return highLighted;
         }
 
+        @SuppressWarnings("deprecation")
         public void setHighLighted(boolean highLighted) {
             if (this.highLighted != highLighted) {
                 this.highLighted = highLighted;
