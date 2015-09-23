@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <declare-styleable name="Lock9View">
         <attr name="lock9_nodeSrc" format="color|reference" />
         <attr name="lock9_nodeOnSrc" format="color|reference" />
@@ -8,4 +9,5 @@
         <attr name="lock9_padding" format="dimension" />
         <attr name="lock9_spacing" format="dimension" />
     </declare-styleable>
+
 </resources>

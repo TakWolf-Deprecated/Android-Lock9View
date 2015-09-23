@@ -4,17 +4,17 @@ An Android grid lock screen view with a callback interface.
 
 ## ScreenShot ##
 
-![Screenshot](screenshot/screenshot.png)
+![Screenshot](art/screenshot.png)
 
 ## Demo ##
 
-[![Google Play Store](screenshot/git_it_on_google_play.png)](https://play.google.com/store/apps/details?id=com.takwolf.android.lock9)
+[![Google Play Store](art/git_it_on_google_play.png)](https://play.google.com/store/apps/details?id=com.takwolf.android.lock9)
 
 ## Usage ##
 
 ### Gradle ###
 
-    compile 'com.takwolf.android:lock9view:0.0.6'
+    compile 'com.takwolf.android:lock9view:0.0.7'
 
 ### Layout ###
 
@@ -23,35 +23,16 @@ An Android grid lock screen view with a callback interface.
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        app:lock9_nodeSrc="@drawable/lock_9_view_node_normal"
-        app:lock9_nodeOnSrc="@drawable/lock_9_view_node_highlighted"
-        app:lock9_lineColor="#ff006699"
-        app:lock9_lineWidth="8dp"
-        app:lock9_padding="32dp"
-        app:lock9_spacing="32dp" />
+        app:lock9_nodeSrc="@drawable/node_normal"
+        app:lock9_nodeOnSrc="@drawable/node_active"
+        app:lock9_lineColor="@color/blue_light"
+        app:lock9_lineWidth="4dp"
+        app:lock9_padding="28dp"
+        app:lock9_spacing="28dp" />
 
 ### Explain ###
 
-![Explain](screenshot/explain.png)
-
-<b style="color:red">Attention!!!</b>
-
-If you want to update library reference from version 0.0.4 or earlier,
-you should add attributes "lock9_padding" and "lock9_spacing" in your layout to adjust node size(default is 0dp)
-otherwise the node size will be changed.
-
-<b style="color:red">Attention!!!</b>
-
-If you want to update library reference from version 0.0.3 or earlier,
-you should add a prefix "lock9_" to the Lock9View attributes in your layout, like :
-
-    nodeSrc -> lock9_nodeSrc
-
-This way to solve the resources error if another library has defined the same attributes like :
-
-    "Attribute "xxx" has already been defined"
-
-Thanks for <b>[@IGZpablocanamares](https://github.com/IGZpablocanamares)</b>.
+![Explain](art/explain.png)
 
 ### Activity ###
 
@@ -76,6 +57,12 @@ TakWolf
 [takwolf@foxmail.com](mailto:takwolf@foxmail.com)
 
 [http://takwolf.com](http://takwolf.com)
+
+## Thanks ##
+
+[@IGZpablocanamares](https://github.com/IGZpablocanamares)
+
+[@yuiopt](https://github.com/yuiopt)
 
 ## License ##
 
