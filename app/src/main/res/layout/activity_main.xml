@@ -10,10 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        app:lock9_nodeSrc="@drawable/lock_9_view_node_normal"
-        app:lock9_nodeOnSrc="@drawable/lock_9_view_node_highlighted"
-        app:lock9_lineColor="#ff006699"
-        app:lock9_lineWidth="8dp"
+        app:lock9_nodeSrc="@drawable/node_normal"
+        app:lock9_nodeOnSrc="@drawable/node_active"
+        app:lock9_lineColor="@color/blue_light"
+        app:lock9_lineWidth="4dp"
         app:lock9_padding="28dp"
         app:lock9_spacing="28dp" />
 

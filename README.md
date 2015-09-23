@@ -4,11 +4,11 @@ An Android grid lock screen view with a callback interface.
 
 ## ScreenShot ##
 
-![Screenshot](screenshot/screenshot.png)
+![Screenshot](art/screenshot.png)
 
 ## Demo ##
 
-[![Google Play Store](screenshot/git_it_on_google_play.png)](https://play.google.com/store/apps/details?id=com.takwolf.android.lock9)
+[![Google Play Store](art/git_it_on_google_play.png)](https://play.google.com/store/apps/details?id=com.takwolf.android.lock9)
 
 ## Usage ##
 
@@ -32,7 +32,7 @@ An Android grid lock screen view with a callback interface.
 
 ### Explain ###
 
-![Explain](screenshot/explain.png)
+![Explain](art/explain.png)
 
 <b style="color:red">Attention!!!</b>
 
