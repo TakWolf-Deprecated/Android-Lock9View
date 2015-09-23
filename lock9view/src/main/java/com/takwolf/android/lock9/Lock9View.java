@@ -138,11 +138,27 @@ public class Lock9View extends ViewGroup {
     }
 
     /**
-     * TODO 我们让高度等于宽度 - 这么使用不清楚是否正确
+     * TODO 我们让高度等于宽度 - 方法有待验证
      */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        setMeasuredDimension(widthMeasureSpec, widthMeasureSpec);
+        int size = measureSize(widthMeasureSpec); // 测量宽度
+        setMeasuredDimension(size, size);
+    }
+
+    /**
+     * TODO 测量长度
+     */
+    private int measureSize(int measureSpec) {
+        int specMode = MeasureSpec.getMode(measureSpec); // 得到模式
+        int specSize = MeasureSpec.getSize(measureSpec); // 得到尺寸
+        switch (specMode) {
+            case MeasureSpec.EXACTLY:
+            case MeasureSpec.AT_MOST:
+                return specSize;
+            default:
+                return 0;
+        }
     }
 
     /**
