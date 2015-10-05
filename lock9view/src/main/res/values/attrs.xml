@@ -12,7 +12,7 @@
         <attr name="lock9_padding" format="dimension" />
         <attr name="lock9_spacing" format="dimension" />
         <attr name="lock9_enableVibrate" format="boolean" />
-        <attr name="lock9_vibrateTime" format="float" />
+        <attr name="lock9_vibrateTime" format="integer" />
     </declare-styleable>
 
 </resources>
