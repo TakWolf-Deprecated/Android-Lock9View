@@ -171,16 +171,16 @@ public class Lock9View extends ViewGroup {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         if (changed) {
-            if (nodeSize > 0) { // 如果设置nodeSize值，则按照这个值来布局，手动计算分割边距
-                float paddingOrSpacing = (right - left - nodeSize * 3) / 4;
+            if (nodeSize > 0) { // 如果设置nodeSize值，则将节点绘制在九等分区域中心
+                float areaWidth = (right - left) / 3;
                 for (int n = 0; n < 9; n++) {
                     NodeView node = (NodeView) getChildAt(n);
                     // 获取3*3宫格内坐标
                     int row = n / 3;
                     int col = n % 3;
-                    // 计算实际的坐标，要包括内边距和分割边距
-                    int l = (int) (paddingOrSpacing + col * (nodeSize + paddingOrSpacing));
-                    int t = (int) (paddingOrSpacing + row * (nodeSize + paddingOrSpacing));
+                    // 计算实际的坐标
+                    int l = (int) (col * areaWidth + (areaWidth - nodeSize) / 2);
+                    int t = (int) (row * areaWidth + (areaWidth - nodeSize) / 2);
                     int r = (int) (l + nodeSize);
                     int b = (int) (t + nodeSize);
                     node.layout(l, t, r, b);
@@ -277,10 +277,10 @@ public class Lock9View extends ViewGroup {
     private NodeView getNodeAt(float x, float y) {
         for (int n = 0; n < getChildCount(); n++) {
             NodeView node = (NodeView) getChildAt(n);
-            if (!(x >= (node.getLeft() - nodeAreaExpand) && x < (node.getRight() + nodeAreaExpand))) {
+            if (!(x >= node.getLeft() - nodeAreaExpand && x < node.getRight() + nodeAreaExpand)) {
                 continue;
             }
-            if (!(y >= (node.getTop() - nodeAreaExpand) && y < (node.getBottom() + nodeAreaExpand))) {
+            if (!(y >= node.getTop() - nodeAreaExpand && y < node.getBottom() + nodeAreaExpand)) {
                 continue;
             }
             return node;
