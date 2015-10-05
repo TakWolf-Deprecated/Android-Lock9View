@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ff444466">
+    android:padding="8dp"
+    android:orientation="vertical">
 
-    <com.takwolf.android.lock9.Lock9View
-        android:id="@+id/lock_9_view"
+    <Button
+        android:id="@+id/btn_normal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        app:lock9_nodeSrc="@drawable/node_normal"
-        app:lock9_nodeOnSrc="@drawable/node_active"
-        app:lock9_lineColor="@color/blue_light"
-        app:lock9_lineWidth="4dp"
-        app:lock9_padding="28dp"
-        app:lock9_spacing="28dp" />
+        android:layout_margin="8dp"
+        android:text="@string/normal_demo" />
 
-</FrameLayout>
+    <Button
+        android:id="@+id/btn_l_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="@string/android_l_style" />
+
+</LinearLayout>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.takwolf.android.lock9.Lock9View
+        android:id="@+id/lock_9_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        app:lock9_nodeSrc="@drawable/node_normal"
+        app:lock9_nodeOnSrc="@drawable/node_active"
+        app:lock9_nodeOnAnim="@anim/node_on_1"
+        app:lock9_lineColor="@color/blue_light"
+        app:lock9_lineWidth="4dp"
+        app:lock9_padding="28dp"
+        app:lock9_spacing="28dp" />
+
+</FrameLayout>
