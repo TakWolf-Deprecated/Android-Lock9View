@@ -25,12 +25,12 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import java.util.ArrayList;
@@ -58,6 +58,13 @@ public class Lock9View extends ViewGroup {
     private float lineWidth;
     private float padding; // 内边距
     private float spacing; // 节点间隔距离
+
+    /**
+     * 震动管理器
+     */
+    private Vibrator vibrator;
+    private boolean enableVibrate;
+    private int vibrateTime;
 
     /**
      * 画线用的画笔
@@ -90,29 +97,29 @@ public class Lock9View extends ViewGroup {
 
     public Lock9View(Context context) {
         super(context);
-        initFromAttributes(null, 0);
+        initFromAttributes(context, null, 0);
     }
 
     public Lock9View(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initFromAttributes(attrs, 0);
+        initFromAttributes(context, attrs, 0);
     }
 
     public Lock9View(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initFromAttributes(attrs, defStyleAttr);
+        initFromAttributes(context, attrs, defStyleAttr);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public Lock9View(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        initFromAttributes(attrs, defStyleAttr);
+        initFromAttributes(context, attrs, defStyleAttr);
     }
 
     /**
      * 初始化
      */
-    private void initFromAttributes(AttributeSet attrs, int defStyleAttr) {
+    private void initFromAttributes(Context context, AttributeSet attrs, int defStyleAttr) {
         // 获取定义的属性
         final TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.Lock9View, defStyleAttr, 0);
 
@@ -126,7 +133,15 @@ public class Lock9View extends ViewGroup {
         padding = a.getDimension(R.styleable.Lock9View_lock9_padding, 0);
         spacing = a.getDimension(R.styleable.Lock9View_lock9_spacing, 0);
 
+        enableVibrate = a.getBoolean(R.styleable.Lock9View_lock9_enableVibrate, false);
+        vibrateTime = a.getInt(R.styleable.Lock9View_lock9_vibrateTime, 20);
+
         a.recycle();
+
+        // 初始化振动器
+        if (enableVibrate) {
+            vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        }
 
         // 初始化画笔
         paint = new Paint(Paint.DITHER_FLAG);
@@ -323,6 +338,11 @@ public class Lock9View extends ViewGroup {
                         startAnimation(AnimationUtils.loadAnimation(getContext(), nodeOnAnim));
                     } else {
                         clearAnimation();
+                    }
+                }
+                if (enableVibrate) { // 震动
+                    if (highLighted) {
+                        vibrator.vibrate(vibrateTime);
                     }
                 }
             }
