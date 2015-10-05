@@ -30,6 +30,8 @@ import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +53,7 @@ public class Lock9View extends ViewGroup {
     private Drawable nodeOnSrc;
     private float nodeSize; // 节点大小，如果不为0，则忽略内边距和间距属性
     private float nodeAreaExpand; // 对节点的触摸区域进行扩展
+    private int nodeOnAnim; // 节点点亮时的动画
     private int lineColor;
     private float lineWidth;
     private float padding; // 内边距
@@ -117,6 +120,7 @@ public class Lock9View extends ViewGroup {
         nodeOnSrc = a.getDrawable(R.styleable.Lock9View_lock9_nodeOnSrc);
         nodeSize = a.getDimension(R.styleable.Lock9View_lock9_nodeSize, 0);
         nodeAreaExpand = a.getDimension(R.styleable.Lock9View_lock9_nodeAreaExpand, 0);
+        nodeOnAnim = a.getResourceId(R.styleable.Lock9View_lock9_nodeOnAnim, 0);
         lineColor = a.getColor(R.styleable.Lock9View_lock9_lineColor, Color.argb(0, 0, 0, 0));
         lineWidth = a.getDimension(R.styleable.Lock9View_lock9_lineWidth, 0);
         padding = a.getDimension(R.styleable.Lock9View_lock9_padding, 0);
@@ -313,6 +317,13 @@ public class Lock9View extends ViewGroup {
                 this.highLighted = highLighted;
                 if (nodeOnSrc != null) { // 没有设置高亮图片则不变化
                     setBackgroundDrawable(highLighted ? nodeOnSrc : nodeSrc);
+                }
+                if (nodeOnAnim != 0) { // 播放动画
+                    if (highLighted) {
+                        startAnimation(AnimationUtils.loadAnimation(getContext(), nodeOnAnim));
+                    } else {
+                        clearAnimation();
+                    }
                 }
             }
         }

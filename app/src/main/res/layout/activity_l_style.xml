@@ -13,6 +13,7 @@
         app:lock9_nodeSrc="@drawable/node_small"
         app:lock9_nodeSize="16dp"
         app:lock9_nodeAreaExpand="24dp"
+        app:lock9_nodeOnAnim="@anim/node_on_2"
         app:lock9_lineColor="@color/blue_light"
         app:lock9_lineWidth="4dp" />
 
