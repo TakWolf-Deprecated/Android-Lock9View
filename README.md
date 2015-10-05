@@ -55,7 +55,7 @@ An Android grid lock screen view with a callback interface.
 
 **PS :**
 
-**If use *"lock9_nodeSize"* , it will ignore *"lock9_padding"* and *"lock9_spacing"***
+**If use *"lock9_nodeSize"* , it will ignore *"lock9_padding"* and *"lock9_spacing"*.**
 
 **The nodes will be layout on the center of 9 average areas.**
 
