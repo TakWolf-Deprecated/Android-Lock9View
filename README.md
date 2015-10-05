@@ -14,9 +14,9 @@ An Android grid lock screen view with a callback interface.
 
 ### Gradle ###
 
-    compile 'com.takwolf.android:lock9view:0.0.7'
+    compile 'com.takwolf.android:lock9view:0.0.8'
 
-### Layout ###
+### Layout example 1 ###
 
     <com.takwolf.android.lock9.Lock9View
         android:id="@+id/lock_9_view"
@@ -25,14 +25,64 @@ An Android grid lock screen view with a callback interface.
         android:layout_gravity="center"
         app:lock9_nodeSrc="@drawable/node_normal"
         app:lock9_nodeOnSrc="@drawable/node_active"
+        app:lock9_nodeOnAnim="@anim/node_on_1"
         app:lock9_lineColor="@color/blue_light"
         app:lock9_lineWidth="4dp"
         app:lock9_padding="28dp"
         app:lock9_spacing="28dp" />
 
-### Explain ###
 
-![Explain](art/explain.png)
+![layout_1](art/layout_1.png)
+
+### Layout example 2 ###
+
+    <com.takwolf.android.lock9.Lock9View
+        android:id="@+id/lock_9_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        android:layout_gravity="center"
+        app:lock9_nodeSrc="@drawable/node_small"
+        app:lock9_nodeSize="16dp"
+        app:lock9_nodeAreaExpand="24dp"
+        app:lock9_nodeOnAnim="@anim/node_on_2"
+        app:lock9_lineColor="@color/blue_light"
+        app:lock9_lineWidth="4dp"
+        app:lock9_enableVibrate="true"
+        app:lock9_vibrateTime="20" />
+
+![layout_2](art/layout_2.png)
+
+**PS :**
+
+**If use *"lock9_nodeSize"* , it will ignore *"lock9_padding"* and *"lock9_spacing"***
+
+**The nodes will be layout on the center of 9 average areas.**
+
+### Touch area ###
+
+If you want to draw a small node with a bigger touch area, please user :
+
+    app:lock9_nodeAreaExpand="24dp"  // default is 0
+
+touchArea = lock9_nodeSize + lock9_nodeAreaExpand * 2
+
+### Animation ###
+
+    app:lock9_nodeOnAnim="@anim/node_on_2"
+
+### Vibrate ###
+
+    app:lock9_enableVibrate="true"  // default is false
+    app:lock9_vibrateTime="20"      // default is 20 milliseconds
+    
+Also need :
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+    
+### Error Status ### 
+
+TODO
 
 ### Activity ###
 
@@ -46,9 +96,9 @@ An Android grid lock screen view with a callback interface.
 
     });
 
-## What's next ##
+## TODO ##
 
-Maybe add an error status.
+Add an error status.
 
 ## Author ##
 
@@ -57,12 +107,6 @@ TakWolf
 [takwolf@foxmail.com](mailto:takwolf@foxmail.com)
 
 [http://takwolf.com](http://takwolf.com)
-
-## Thanks ##
-
-[@IGZpablocanamares](https://github.com/IGZpablocanamares)
-
-[@yuiopt](https://github.com/yuiopt)
 
 ## License ##
 
