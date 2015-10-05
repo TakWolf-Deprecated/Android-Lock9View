@@ -8,5 +8,5 @@
         android:repeatCount="1"
         android:repeatMode="reverse"
         android:startOffset="0"
-        android:duration="100" />
+        android:duration="150" />
 </set>
