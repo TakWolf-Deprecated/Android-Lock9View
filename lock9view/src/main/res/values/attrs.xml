@@ -4,6 +4,8 @@
     <declare-styleable name="Lock9View">
         <attr name="lock9_nodeSrc" format="color|reference" />
         <attr name="lock9_nodeOnSrc" format="color|reference" />
+        <attr name="lock9_nodeSize" format="dimension" />
+        <attr name="lock9_nodeAreaExpand" format="dimension" />
         <attr name="lock9_lineColor" format="color" />
         <attr name="lock9_lineWidth" format="dimension" />
         <attr name="lock9_padding" format="dimension" />

@@ -25,6 +25,7 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:23.0.1'
-    compile 'com.takwolf.android:lock9view:0.0.7'
-    // compile project(':lock9view')
+    compile 'com.jakewharton:butterknife:7.0.1'
+    // compile 'com.takwolf.android:lock9view:0.0.7'
+    compile project(':lock9view')
 }

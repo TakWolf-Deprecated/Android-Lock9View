@@ -49,6 +49,8 @@ public class Lock9View extends ViewGroup {
      */
     private Drawable nodeSrc;
     private Drawable nodeOnSrc;
+    private float nodeSize; // 节点大小，如果不为0，则忽略内边距和间距属性
+    private float nodeAreaExpand; // 对节点的触摸区域进行扩展
     private int lineColor;
     private float lineWidth;
     private float padding; // 内边距
@@ -113,6 +115,8 @@ public class Lock9View extends ViewGroup {
 
         nodeSrc = a.getDrawable(R.styleable.Lock9View_lock9_nodeSrc);
         nodeOnSrc = a.getDrawable(R.styleable.Lock9View_lock9_nodeOnSrc);
+        nodeSize = a.getDimension(R.styleable.Lock9View_lock9_nodeSize, 0);
+        nodeAreaExpand = a.getDimension(R.styleable.Lock9View_lock9_nodeAreaExpand, 0);
         lineColor = a.getColor(R.styleable.Lock9View_lock9_lineColor, Color.argb(0, 0, 0, 0));
         lineWidth = a.getDimension(R.styleable.Lock9View_lock9_lineWidth, 0);
         padding = a.getDimension(R.styleable.Lock9View_lock9_padding, 0);
@@ -167,18 +171,34 @@ public class Lock9View extends ViewGroup {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         if (changed) {
-            int nodeWidth = (int) ((right - left - padding * 2 - spacing * 2) / 3);
-            for (int n = 0; n < 9; n++) {
-                NodeView node = (NodeView) getChildAt(n);
-                // 获取3*3宫格内坐标
-                int row = n / 3;
-                int col = n % 3;
-                // 计算实际的坐标，要包括内边距和分割边距
-                int l = (int) (padding + col * (nodeWidth + spacing));
-                int t = (int) (padding + row * (nodeWidth + spacing));
-                int r = l + nodeWidth;
-                int b = t + nodeWidth;
-                node.layout(l, t, r, b);
+            if (nodeSize > 0) { // 如果设置nodeSize值，则按照这个值来布局，手动计算分割边距
+                float paddingOrSpacing = (right - left - nodeSize * 3) / 4;
+                for (int n = 0; n < 9; n++) {
+                    NodeView node = (NodeView) getChildAt(n);
+                    // 获取3*3宫格内坐标
+                    int row = n / 3;
+                    int col = n % 3;
+                    // 计算实际的坐标，要包括内边距和分割边距
+                    int l = (int) (paddingOrSpacing + col * (nodeSize + paddingOrSpacing));
+                    int t = (int) (paddingOrSpacing + row * (nodeSize + paddingOrSpacing));
+                    int r = (int) (l + nodeSize);
+                    int b = (int) (t + nodeSize);
+                    node.layout(l, t, r, b);
+                }
+            } else { // 否则按照分割边距布局，手动计算节点大小
+                float nodeSize = (right - left - padding * 2 - spacing * 2) / 3;
+                for (int n = 0; n < 9; n++) {
+                    NodeView node = (NodeView) getChildAt(n);
+                    // 获取3*3宫格内坐标
+                    int row = n / 3;
+                    int col = n % 3;
+                    // 计算实际的坐标，要包括内边距和分割边距
+                    int l = (int) (padding + col * (nodeSize + spacing));
+                    int t = (int) (padding + row * (nodeSize + spacing));
+                    int r = (int) (l + nodeSize);
+                    int b = (int) (t + nodeSize);
+                    node.layout(l, t, r, b);
+                }
             }
         }
     }
@@ -257,10 +277,10 @@ public class Lock9View extends ViewGroup {
     private NodeView getNodeAt(float x, float y) {
         for (int n = 0; n < getChildCount(); n++) {
             NodeView node = (NodeView) getChildAt(n);
-            if (!(x >= node.getLeft() && x < node.getRight())) {
+            if (!(x >= (node.getLeft() - nodeAreaExpand) && x < (node.getRight() + nodeAreaExpand))) {
                 continue;
             }
-            if (!(y >= node.getTop() && y < node.getBottom())) {
+            if (!(y >= (node.getTop() - nodeAreaExpand) && y < (node.getBottom() + nodeAreaExpand))) {
                 continue;
             }
             return node;
@@ -291,7 +311,9 @@ public class Lock9View extends ViewGroup {
         public void setHighLighted(boolean highLighted) {
             if (this.highLighted != highLighted) {
                 this.highLighted = highLighted;
-                setBackgroundDrawable(highLighted ? nodeOnSrc : nodeSrc);
+                if (nodeOnSrc != null) { // 没有设置高亮图片则不变化
+                    setBackgroundDrawable(highLighted ? nodeOnSrc : nodeSrc);
+                }
             }
         }
 
