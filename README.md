@@ -80,7 +80,7 @@ Also need :
 
     <uses-permission android:name="android.permission.VIBRATE" />
     
-### Error Status ### 
+### Error status ### 
 
 TODO
 
