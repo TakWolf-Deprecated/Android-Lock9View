@@ -15,7 +15,7 @@
         app:lock9_padding="28dp"
         app:lock9_spacing="28dp"
         app:lock9_lineColor="@color/blue_light"
-        app:lock9_lineWidth="4dp"
+        app:lock9_lineWidth="8dp"
         app:lock9_enableVibrate="true"
         app:lock9_vibrateTime="20" />
 
