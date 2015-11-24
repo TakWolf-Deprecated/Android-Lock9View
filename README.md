@@ -28,11 +28,13 @@ An Android grid lock screen view with a callback interface.
         app:lock9_nodeSrc="@drawable/node_normal"
         app:lock9_nodeOnSrc="@drawable/node_active"
         app:lock9_nodeOnAnim="@anim/node_on_1"
-        app:lock9_lineColor="@color/blue_light"
-        app:lock9_lineWidth="4dp"
         app:lock9_padding="28dp"
-        app:lock9_spacing="28dp" />
-
+        app:lock9_spacing="28dp"
+        app:lock9_lineColor="@color/blue_light"
+        app:lock9_lineWidth="8dp"
+        app:lock9_autoLink="false"
+        app:lock9_enableVibrate="true"
+        app:lock9_vibrateTime="20" />
 
 ![layout_1](art/layout_1.png)
 
@@ -44,12 +46,14 @@ An Android grid lock screen view with a callback interface.
         android:layout_height="wrap_content"
         android:layout_margin="24dp"
         android:layout_gravity="center"
-        app:lock9_nodeSrc="@drawable/node_small"
+        app:lock9_nodeSrc="@drawable/node_small_normal"
+        app:lock9_nodeOnSrc="@drawable/node_small_active"
+        app:lock9_nodeOnAnim="@anim/node_on_2"
         app:lock9_nodeSize="16dp"
         app:lock9_nodeAreaExpand="24dp"
-        app:lock9_nodeOnAnim="@anim/node_on_2"
         app:lock9_lineColor="@color/blue_light"
         app:lock9_lineWidth="4dp"
+        app:lock9_autoLink="true"
         app:lock9_enableVibrate="true"
         app:lock9_vibrateTime="20" />
 
@@ -73,6 +77,14 @@ touchArea = lock9_nodeSize + lock9_nodeAreaExpand * 2
 
     app:lock9_nodeOnAnim="@anim/node_on_2"
 
+### AutoLink ###
+
+// TODO
+
+    app:lock9_autoLink="true"
+
+Default value is false.
+
 ### Vibrate ###
 
     app:lock9_enableVibrate="true"  // default is false
@@ -81,10 +93,10 @@ touchArea = lock9_nodeSize + lock9_nodeAreaExpand * 2
 Also need :
 
     <uses-permission android:name="android.permission.VIBRATE" />
-    
+
 ### Error status ###
 
-TODO
+// TODO
 
 ### Activity ###
 
@@ -97,10 +109,6 @@ TODO
         }
 
     });
-
-## TODO ##
-
-Add an error status.
 
 ## Author ##
 
