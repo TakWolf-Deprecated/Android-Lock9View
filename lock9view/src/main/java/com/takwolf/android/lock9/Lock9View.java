@@ -243,13 +243,27 @@ public class Lock9View extends ViewGroup {
                 if (currentNode == null) { // 之前没有点
                     if (nodeAt != null) { // 第一个点
                         currentNode = nodeAt;
-                        currentNode.setHighLighted(true);
+                        currentNode.setHighLighted(true, false);
                         passwordBuilder.append(currentNode.getNum());
                         invalidate();  // 通知重绘
                     }
                 } else { // 之前有点-所以怎么样都要重绘
-                    if (nodeAt != null && !nodeAt.isHighLighted()) { // 当前碰触了新点
-                        nodeAt.setHighLighted(true);
+                    if (nodeAt != null && !nodeAt.isHighLighted()) { // 当前碰触了新节点
+                        // 判断是否有中间节点
+                        if (autoLink) {
+                            NodeView midNode = getNodeBetween(currentNode, nodeAt);
+                            if (midNode != null && !midNode.isHighLighted()) { // 存在中间节点没点亮
+                                // 点亮中间节点
+                                midNode.setHighLighted(true, true);
+                                Pair<NodeView, NodeView> pair = new Pair<>(currentNode, midNode);
+                                lineList.add(pair);
+                                // 赋值中间node
+                                currentNode = midNode;
+                                passwordBuilder.append(currentNode.getNum());
+                            }
+                        }
+                        // 点亮当前触摸节点
+                        nodeAt.setHighLighted(true, false);
                         Pair<NodeView, NodeView> pair = new Pair<>(currentNode, nodeAt);
                         lineList.add(pair);
                         // 赋值当前的node
@@ -272,7 +286,7 @@ public class Lock9View extends ViewGroup {
                     // 清除高亮
                     for (int n = 0; n < getChildCount(); n++) {
                         NodeView node = (NodeView) getChildAt(n);
-                        node.setHighLighted(false);
+                        node.setHighLighted(false, false);
                     }
                     // 通知重绘
                     invalidate();
@@ -315,6 +329,26 @@ public class Lock9View extends ViewGroup {
     }
 
     /**
+     * 获取两个Node中间的Node，返回null表示没有中间node
+     */
+    private NodeView getNodeBetween(NodeView na, NodeView nb) {
+        if (na.getNum() > nb.getNum()) { // 保证 na 小于 nb
+            NodeView nc = na;
+            na = nb;
+            nb = nc;
+        }
+        if (na.getNum() % 3 == 1 && nb.getNum() - na.getNum() == 2) { // 水平的情况
+            return (NodeView) getChildAt(na.getNum());
+        } else if (na.getNum() <= 3 && nb.getNum() - na.getNum() == 6) { // 垂直的情况
+            return (NodeView) getChildAt(na.getNum() + 2);
+        } else if ((na.getNum() == 1 && nb.getNum() == 9) || (na.getNum() == 3 && nb.getNum() == 7)) { // 倾斜的情况
+            return (NodeView) getChildAt(4);
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * 节点描述类
      */
     private class NodeView extends View {
@@ -334,7 +368,7 @@ public class Lock9View extends ViewGroup {
         }
 
         @SuppressWarnings("deprecation")
-        public void setHighLighted(boolean highLighted) {
+        public void setHighLighted(boolean highLighted, boolean isMid) {
             if (this.highLighted != highLighted) {
                 this.highLighted = highLighted;
                 if (nodeOnSrc != null) { // 没有设置高亮图片则不变化
@@ -347,7 +381,7 @@ public class Lock9View extends ViewGroup {
                         clearAnimation();
                     }
                 }
-                if (enableVibrate) { // 震动
+                if (enableVibrate && !isMid) { // 震动
                     if (highLighted) {
                         vibrator.vibrate(vibrateTime);
                     }

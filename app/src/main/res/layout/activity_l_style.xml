@@ -17,6 +17,7 @@
         app:lock9_nodeAreaExpand="24dp"
         app:lock9_lineColor="@color/blue_light"
         app:lock9_lineWidth="4dp"
+        app:lock9_autoLink="true"
         app:lock9_enableVibrate="true"
         app:lock9_vibrateTime="20" />
 
