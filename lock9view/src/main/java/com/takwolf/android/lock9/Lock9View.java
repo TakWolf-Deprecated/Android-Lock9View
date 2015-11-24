@@ -47,7 +47,7 @@ public class Lock9View extends ViewGroup {
     private float y; // 当前手指坐标y
 
     /**
-     * 自定义属性列表
+     * 布局和节点样式
      */
     private Drawable nodeSrc;
     private Drawable nodeOnSrc;
@@ -58,6 +58,11 @@ public class Lock9View extends ViewGroup {
     private float lineWidth;
     private float padding; // 内边距
     private float spacing; // 节点间隔距离
+
+    /**
+     * 自动连接中间节点
+     */
+    private boolean autoLink;
 
     /**
      * 震动管理器
@@ -132,6 +137,8 @@ public class Lock9View extends ViewGroup {
         lineWidth = a.getDimension(R.styleable.Lock9View_lock9_lineWidth, 0);
         padding = a.getDimension(R.styleable.Lock9View_lock9_padding, 0);
         spacing = a.getDimension(R.styleable.Lock9View_lock9_spacing, 0);
+
+        autoLink = a.getBoolean(R.styleable.Lock9View_lock9_autoLink, false);
 
         enableVibrate = a.getBoolean(R.styleable.Lock9View_lock9_enableVibrate, false);
         vibrateTime = a.getInt(R.styleable.Lock9View_lock9_vibrateTime, 20);

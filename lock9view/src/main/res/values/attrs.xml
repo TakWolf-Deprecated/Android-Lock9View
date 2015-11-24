@@ -11,6 +11,7 @@
         <attr name="lock9_lineWidth" format="dimension" />
         <attr name="lock9_padding" format="dimension" />
         <attr name="lock9_spacing" format="dimension" />
+        <attr name="lock9_autoLink" format="boolean" />
         <attr name="lock9_enableVibrate" format="boolean" />
         <attr name="lock9_vibrateTime" format="integer" />
     </declare-styleable>
