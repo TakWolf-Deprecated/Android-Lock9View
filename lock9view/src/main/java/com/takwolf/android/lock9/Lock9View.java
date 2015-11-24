@@ -102,31 +102,31 @@ public class Lock9View extends ViewGroup {
 
     public Lock9View(Context context) {
         super(context);
-        initFromAttributes(context, null, 0);
+        init(context, null, 0, 0);
     }
 
     public Lock9View(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initFromAttributes(context, attrs, 0);
+        init(context, attrs, 0, 0);
     }
 
     public Lock9View(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initFromAttributes(context, attrs, defStyleAttr);
+        init(context, attrs, defStyleAttr, 0);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public Lock9View(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        initFromAttributes(context, attrs, defStyleAttr);
+        init(context, attrs, defStyleAttr, defStyleRes);
     }
 
     /**
      * 初始化
      */
-    private void initFromAttributes(Context context, AttributeSet attrs, int defStyleAttr) {
+    private void init(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         // 获取定义的属性
-        final TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.Lock9View, defStyleAttr, 0);
+        final TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.Lock9View, defStyleAttr, defStyleRes);
 
         nodeSrc = a.getDrawable(R.styleable.Lock9View_lock9_nodeSrc);
         nodeOnSrc = a.getDrawable(R.styleable.Lock9View_lock9_nodeOnSrc);
