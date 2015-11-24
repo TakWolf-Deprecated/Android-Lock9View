@@ -12,9 +12,12 @@
         app:lock9_nodeSrc="@drawable/node_normal"
         app:lock9_nodeOnSrc="@drawable/node_active"
         app:lock9_nodeOnAnim="@anim/node_on_1"
-        app:lock9_lineColor="@color/blue_light"
-        app:lock9_lineWidth="4dp"
         app:lock9_padding="28dp"
-        app:lock9_spacing="28dp" />
+        app:lock9_spacing="28dp"
+        app:lock9_lineColor="@color/blue_light"
+        app:lock9_lineWidth="8dp"
+        app:lock9_autoLink="false"
+        app:lock9_enableVibrate="true"
+        app:lock9_vibrateTime="20" />
 
 </FrameLayout>

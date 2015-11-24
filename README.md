@@ -1,4 +1,6 @@
-# Android-Lock9View [![Download](https://api.bintray.com/packages/takwolf/maven/Android-Lock9View/images/download.svg)](https://bintray.com/takwolf/maven/Android-Lock9View/_latestVersion) [![API](https://img.shields.io/badge/API-5%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=5) #
+# Android Lock9View #
+
+[![Download](https://api.bintray.com/packages/takwolf/maven/Android-Lock9View/images/download.svg)](https://bintray.com/takwolf/maven/Android-Lock9View/_latestVersion) [![API](https://img.shields.io/badge/API-5%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=5) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Android--Lock9View-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/1704)
 
 An Android grid lock screen view with a callback interface.
 
@@ -14,7 +16,7 @@ An Android grid lock screen view with a callback interface.
 
 ### Gradle ###
 
-    compile 'com.takwolf.android:lock9view:0.0.8'
+    compile 'com.takwolf.android:lock9view:0.0.9'
 
 ### Layout example 1 ###
 
@@ -26,11 +28,13 @@ An Android grid lock screen view with a callback interface.
         app:lock9_nodeSrc="@drawable/node_normal"
         app:lock9_nodeOnSrc="@drawable/node_active"
         app:lock9_nodeOnAnim="@anim/node_on_1"
-        app:lock9_lineColor="@color/blue_light"
-        app:lock9_lineWidth="4dp"
         app:lock9_padding="28dp"
-        app:lock9_spacing="28dp" />
-
+        app:lock9_spacing="28dp"
+        app:lock9_lineColor="@color/blue_light"
+        app:lock9_lineWidth="8dp"
+        app:lock9_autoLink="false"
+        app:lock9_enableVibrate="true"
+        app:lock9_vibrateTime="20" />
 
 ![layout_1](art/layout_1.png)
 
@@ -42,12 +46,14 @@ An Android grid lock screen view with a callback interface.
         android:layout_height="wrap_content"
         android:layout_margin="24dp"
         android:layout_gravity="center"
-        app:lock9_nodeSrc="@drawable/node_small"
+        app:lock9_nodeSrc="@drawable/node_small_normal"
+        app:lock9_nodeOnSrc="@drawable/node_small_active"
+        app:lock9_nodeOnAnim="@anim/node_on_2"
         app:lock9_nodeSize="16dp"
         app:lock9_nodeAreaExpand="24dp"
-        app:lock9_nodeOnAnim="@anim/node_on_2"
         app:lock9_lineColor="@color/blue_light"
         app:lock9_lineWidth="4dp"
+        app:lock9_autoLink="true"
         app:lock9_enableVibrate="true"
         app:lock9_vibrateTime="20" />
 
@@ -71,6 +77,12 @@ touchArea = lock9_nodeSize + lock9_nodeAreaExpand * 2
 
     app:lock9_nodeOnAnim="@anim/node_on_2"
 
+### AutoLink ###
+
+![auto_link](art/auto_link.png)
+
+    app:lock9_autoLink="true" // default is false
+
 ### Vibrate ###
 
     app:lock9_enableVibrate="true"  // default is false
@@ -79,10 +91,10 @@ touchArea = lock9_nodeSize + lock9_nodeAreaExpand * 2
 Also need :
 
     <uses-permission android:name="android.permission.VIBRATE" />
-    
+
 ### Error status ###
 
-TODO
+// TODO
 
 ### Activity ###
 
@@ -95,10 +107,6 @@ TODO
         }
 
     });
-
-## TODO ##
-
-Add an error status.
 
 ## Author ##
 
