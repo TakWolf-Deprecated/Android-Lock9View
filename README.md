@@ -79,11 +79,9 @@ touchArea = lock9_nodeSize + lock9_nodeAreaExpand * 2
 
 ### AutoLink ###
 
-// TODO
+![auto_link](art/auto_link.png)
 
-    app:lock9_autoLink="true"
-
-Default value is false.
+    app:lock9_autoLink="true" // default is false
 
 ### Vibrate ###
 
