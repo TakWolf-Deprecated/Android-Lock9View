@@ -237,12 +237,12 @@ public class Lock9View extends ViewGroup {
             case MotionEvent.ACTION_MOVE:
                 x = event.getX(); // 这里要实时记录手指的坐标
                 y = event.getY();
-                NodeView nodeAt = getNodeAt(x, y);
-                if (nodeAt != null && !nodeAt.isHighLighted()) { // 碰触了新的未点亮节点
+                NodeView currentNode = getNodeAt(x, y);
+                if (currentNode != null && !currentNode.isHighLighted()) { // 碰触了新的未点亮节点
                     if (nodeList.size() > 0) { // 之前有点亮的节点
                         if (autoLink) { // 开启了中间节点自动连接
                             NodeView lastNode = nodeList.get(nodeList.size() - 1);
-                            NodeView middleNode = getNodeBetween(lastNode, nodeAt);
+                            NodeView middleNode = getNodeBetween(lastNode, currentNode);
                             if (middleNode != null && !middleNode.isHighLighted()) { // 存在中间节点没点亮
                                 // 点亮中间节点
                                 middleNode.setHighLighted(true, true);
@@ -253,9 +253,9 @@ public class Lock9View extends ViewGroup {
 
                     }
                     // 点亮当前触摸节点
-                    nodeAt.setHighLighted(true, false);
-                    nodeList.add(nodeAt);
-                    passwordBuilder.append(nodeAt.getNum());
+                    currentNode.setHighLighted(true, false);
+                    nodeList.add(currentNode);
+                    passwordBuilder.append(currentNode.getNum());
                 }
                 // 有点亮的节点才重绘
                 if (nodeList.size() > 0) {
