@@ -291,14 +291,14 @@ public class Lock9View extends ViewGroup {
     protected void onDraw(Canvas canvas) {
         // 先绘制已有的连线
         for (int n = 1; n < nodeList.size(); n++) {
-            NodeView first = nodeList.get(n - 1);
-            NodeView second = nodeList.get(n);
-            canvas.drawLine(first.getCenterX(), first.getCenterY(), second.getCenterX(), second.getCenterY(), paint);
+            NodeView firstNode = nodeList.get(n - 1);
+            NodeView secondNode = nodeList.get(n);
+            canvas.drawLine(firstNode.getCenterX(), firstNode.getCenterY(), secondNode.getCenterX(), secondNode.getCenterY(), paint);
         }
         // 如果已经有点亮的点，则在点亮点和手指位置之间绘制连线
         if (nodeList.size() > 0) {
-            NodeView current = nodeList.get(nodeList.size() - 1);
-            canvas.drawLine(current.getCenterX(), current.getCenterY(), x, y, paint);
+            NodeView lastNode = nodeList.get(nodeList.size() - 1);
+            canvas.drawLine(lastNode.getCenterX(), lastNode.getCenterY(), x, y, paint);
         }
     }
 
