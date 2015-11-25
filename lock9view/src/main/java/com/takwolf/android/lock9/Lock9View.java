@@ -239,13 +239,8 @@ public class Lock9View extends ViewGroup {
                 y = event.getY();
                 NodeView nodeAt = getNodeAt(x, y);
                 if (nodeAt != null && !nodeAt.isHighLighted()) { // 碰触了新的未点亮节点
-                    if (nodeList.size() <= 0) { // 之前没有点
-                        nodeAt.setHighLighted(true, false);
-                        nodeList.add(nodeAt);
-                        passwordBuilder.append(nodeAt.getNum());
-                    } else { // 之前有点
-                        // 判断是否有中间节点
-                        if (autoLink) {
+                    if (nodeList.size() > 0) { // 之前有点亮的节点
+                        if (autoLink) { // 开启了中间节点自动连接
                             NodeView currentNode = nodeList.get(nodeList.size() - 1);
                             NodeView midNode = getNodeBetween(currentNode, nodeAt);
                             if (midNode != null && !midNode.isHighLighted()) { // 存在中间节点没点亮
@@ -255,11 +250,12 @@ public class Lock9View extends ViewGroup {
                                 passwordBuilder.append(midNode.getNum());
                             }
                         }
-                        // 点亮当前触摸节点
-                        nodeAt.setHighLighted(true, false);
-                        nodeList.add(nodeAt);
-                        passwordBuilder.append(nodeAt.getNum());
+
                     }
+                    // 点亮当前触摸节点
+                    nodeAt.setHighLighted(true, false);
+                    nodeList.add(nodeAt);
+                    passwordBuilder.append(nodeAt.getNum());
                 }
                 // 有点亮的节点才重绘
                 if (nodeList.size() > 0) {
