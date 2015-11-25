@@ -241,13 +241,13 @@ public class Lock9View extends ViewGroup {
                 if (nodeAt != null && !nodeAt.isHighLighted()) { // 碰触了新的未点亮节点
                     if (nodeList.size() > 0) { // 之前有点亮的节点
                         if (autoLink) { // 开启了中间节点自动连接
-                            NodeView currentNode = nodeList.get(nodeList.size() - 1);
-                            NodeView midNode = getNodeBetween(currentNode, nodeAt);
-                            if (midNode != null && !midNode.isHighLighted()) { // 存在中间节点没点亮
+                            NodeView lastNode = nodeList.get(nodeList.size() - 1);
+                            NodeView middleNode = getNodeBetween(lastNode, nodeAt);
+                            if (middleNode != null && !middleNode.isHighLighted()) { // 存在中间节点没点亮
                                 // 点亮中间节点
-                                midNode.setHighLighted(true, true);
-                                nodeList.add(midNode);
-                                passwordBuilder.append(midNode.getNum());
+                                middleNode.setHighLighted(true, true);
+                                nodeList.add(middleNode);
+                                passwordBuilder.append(middleNode.getNum());
                             }
                         }
 
