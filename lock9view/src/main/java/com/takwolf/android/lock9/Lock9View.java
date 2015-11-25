@@ -249,7 +249,6 @@ public class Lock9View extends ViewGroup {
                                 nodeList.add(middleNode);
                             }
                         }
-
                     }
                     // 点亮当前触摸节点
                     currentNode.setHighLighted(true, false);
