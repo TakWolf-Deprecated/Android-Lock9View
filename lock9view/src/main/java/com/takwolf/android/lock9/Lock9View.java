@@ -27,7 +27,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Vibrator;
 import android.util.AttributeSet;
-import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,8 +40,7 @@ public class Lock9View extends ViewGroup {
     /**
      * 节点相关定义
      */
-    private List<Pair<NodeView, NodeView>> lineList = new ArrayList<>(); // 已经连线的节点链表
-    private NodeView currentNode; // 最近一个点亮的节点，null表示还没有点亮任何节点
+    private List<NodeView> nodeList = new ArrayList<>(); // 已经连线的节点链表
     private float x; // 当前手指坐标x
     private float y; // 当前手指坐标y
 
@@ -239,51 +237,42 @@ public class Lock9View extends ViewGroup {
             case MotionEvent.ACTION_MOVE:
                 x = event.getX(); // 这里要实时记录手指的坐标
                 y = event.getY();
-                NodeView nodeAt = getNodeAt(x, y);
-                if (currentNode == null) { // 之前没有点
-                    if (nodeAt != null) { // 第一个点
-                        currentNode = nodeAt;
-                        currentNode.setHighLighted(true, false);
-                        passwordBuilder.append(currentNode.getNum());
-                        invalidate();  // 通知重绘
-                    }
-                } else { // 之前有点-所以怎么样都要重绘
-                    if (nodeAt != null && !nodeAt.isHighLighted()) { // 当前碰触了新节点
-                        // 判断是否有中间节点
-                        if (autoLink) {
-                            NodeView midNode = getNodeBetween(currentNode, nodeAt);
-                            if (midNode != null && !midNode.isHighLighted()) { // 存在中间节点没点亮
+                NodeView currentNode = getNodeAt(x, y);
+                if (currentNode != null && !currentNode.isHighLighted()) { // 碰触了新的未点亮节点
+                    if (nodeList.size() > 0) { // 之前有点亮的节点
+                        if (autoLink) { // 开启了中间节点自动连接
+                            NodeView lastNode = nodeList.get(nodeList.size() - 1);
+                            NodeView middleNode = getNodeBetween(lastNode, currentNode);
+                            if (middleNode != null && !middleNode.isHighLighted()) { // 存在中间节点没点亮
                                 // 点亮中间节点
-                                midNode.setHighLighted(true, true);
-                                Pair<NodeView, NodeView> pair = new Pair<>(currentNode, midNode);
-                                lineList.add(pair);
-                                // 赋值中间node
-                                currentNode = midNode;
-                                passwordBuilder.append(currentNode.getNum());
+                                middleNode.setHighLighted(true, true);
+                                nodeList.add(middleNode);
                             }
                         }
-                        // 点亮当前触摸节点
-                        nodeAt.setHighLighted(true, false);
-                        Pair<NodeView, NodeView> pair = new Pair<>(currentNode, nodeAt);
-                        lineList.add(pair);
-                        // 赋值当前的node
-                        currentNode = nodeAt;
-                        passwordBuilder.append(currentNode.getNum());
                     }
-                    invalidate(); // 通知重绘
+                    // 点亮当前触摸节点
+                    currentNode.setHighLighted(true, false);
+                    nodeList.add(currentNode);
+                }
+                // 有点亮的节点才重绘
+                if (nodeList.size() > 0) {
+                    invalidate();
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                if (passwordBuilder.length() > 0) { // 有触摸点
+                if (nodeList.size() > 0) { // 有点亮的节点
                     // 回调结果
                     if (callBack != null) {
+                        // 生成密码
+                        passwordBuilder.setLength(0);
+                        for (NodeView nodeView : nodeList) {
+                            passwordBuilder.append(nodeView.getNum());
+                        }
+                        // callback
                         callBack.onFinish(passwordBuilder.toString());
                     }
-                    // 清空状态
-                    lineList.clear();
-                    currentNode = null;
-                    passwordBuilder.setLength(0);
-                    // 清除高亮
+                    // 清除状态
+                    nodeList.clear();
                     for (int n = 0; n < getChildCount(); n++) {
                         NodeView node = (NodeView) getChildAt(n);
                         node.setHighLighted(false, false);
@@ -302,12 +291,15 @@ public class Lock9View extends ViewGroup {
     @Override
     protected void onDraw(Canvas canvas) {
         // 先绘制已有的连线
-        for (Pair<NodeView, NodeView> pair : lineList) {
-            canvas.drawLine(pair.first.getCenterX(), pair.first.getCenterY(), pair.second.getCenterX(), pair.second.getCenterY(), paint);
+        for (int n = 1; n < nodeList.size(); n++) {
+            NodeView firstNode = nodeList.get(n - 1);
+            NodeView secondNode = nodeList.get(n);
+            canvas.drawLine(firstNode.getCenterX(), firstNode.getCenterY(), secondNode.getCenterX(), secondNode.getCenterY(), paint);
         }
         // 如果已经有点亮的点，则在点亮点和手指位置之间绘制连线
-        if (currentNode != null) {
-            canvas.drawLine(currentNode.getCenterX(), currentNode.getCenterY(), x, y, paint);
+        if (nodeList.size() > 0) {
+            NodeView lastNode = nodeList.get(nodeList.size() - 1);
+            canvas.drawLine(lastNode.getCenterX(), lastNode.getCenterY(), x, y, paint);
         }
     }
 
