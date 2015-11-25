@@ -16,7 +16,7 @@ An Android grid lock screen view with a callback interface.
 
 ### Gradle ###
 
-    compile 'com.takwolf.android:lock9view:0.0.9'
+    compile 'com.takwolf.android:lock9view:0.0.10'
 
 ### Layout example 1 ###
 
