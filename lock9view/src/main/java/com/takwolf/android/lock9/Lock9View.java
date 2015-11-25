@@ -247,7 +247,6 @@ public class Lock9View extends ViewGroup {
                                 // 点亮中间节点
                                 middleNode.setHighLighted(true, true);
                                 nodeList.add(middleNode);
-                                passwordBuilder.append(middleNode.getNum());
                             }
                         }
 
@@ -255,7 +254,6 @@ public class Lock9View extends ViewGroup {
                     // 点亮当前触摸节点
                     currentNode.setHighLighted(true, false);
                     nodeList.add(currentNode);
-                    passwordBuilder.append(currentNode.getNum());
                 }
                 // 有点亮的节点才重绘
                 if (nodeList.size() > 0) {
@@ -263,15 +261,19 @@ public class Lock9View extends ViewGroup {
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                if (passwordBuilder.length() > 0) { // 有点亮的节点
+                if (nodeList.size() > 0) { // 有点亮的节点
                     // 回调结果
                     if (callBack != null) {
+                        // 生成密码
+                        passwordBuilder.setLength(0);
+                        for (NodeView nodeView : nodeList) {
+                            passwordBuilder.append(nodeView.getNum());
+                        }
+                        // callback
                         callBack.onFinish(passwordBuilder.toString());
                     }
-                    // 清空状态
+                    // 清除状态
                     nodeList.clear();
-                    passwordBuilder.setLength(0);
-                    // 清除高亮
                     for (int n = 0; n < getChildCount(); n++) {
                         NodeView node = (NodeView) getChildAt(n);
                         node.setHighLighted(false, false);
