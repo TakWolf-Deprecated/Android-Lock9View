@@ -124,7 +124,7 @@ public class Lock9View extends ViewGroup {
      */
     private void init(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         // 获取定义的属性
-        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.Lock9View, defStyleAttr, defStyleRes);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.Lock9View, defStyleAttr, defStyleRes);
 
         nodeSrc = a.getDrawable(R.styleable.Lock9View_lock9_nodeSrc);
         nodeOnSrc = a.getDrawable(R.styleable.Lock9View_lock9_nodeOnSrc);
