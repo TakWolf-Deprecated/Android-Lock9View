@@ -144,7 +144,7 @@ public class Lock9View extends ViewGroup {
         a.recycle();
 
         // 初始化振动器
-        if (enableVibrate && (!isInEditMode()) ) {
+        if (enableVibrate && !isInEditMode()) {
             vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         }
 

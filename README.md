@@ -1,6 +1,6 @@
 # Android Lock9View #
 
-[![Download](https://api.bintray.com/packages/takwolf/maven/Android-Lock9View/images/download.svg)](https://bintray.com/takwolf/maven/Android-Lock9View/_latestVersion) [![API](https://img.shields.io/badge/API-1%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=1) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Android--Lock9View-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/1704)
+[![Download](https://api.bintray.com/packages/takwolf/maven/Android-Lock9View/images/download.svg)](https://bintray.com/takwolf/maven/Android-Lock9View/_latestVersion) [![API](https://img.shields.io/badge/API-3%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=3) [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Android--Lock9View-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/1704)
 
 An Android grid lock screen view with a callback interface.
 
@@ -16,7 +16,7 @@ An Android grid lock screen view with a callback interface.
 
 ### Gradle ###
 
-    compile 'com.takwolf.android:lock9view:0.0.10'
+    compile 'com.takwolf.android:lock9view:0.0.11'
 
 ### Layout example 1 ###
 
