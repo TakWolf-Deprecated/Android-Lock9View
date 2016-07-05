@@ -6,15 +6,15 @@
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden|screenSize">
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -23,15 +23,13 @@
 
         <activity
             android:name=".NormalActivity"
-            android:label="@string/normal_demo"
             android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize" />
 
         <activity
             android:name=".LStyleActivity"
-            android:label="@string/android_l_style"
             android:screenOrientation="portrait"
-            android:configChanges="orientation|keyboardHidden|screenSize" />
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize" />
 
     </application>
 
