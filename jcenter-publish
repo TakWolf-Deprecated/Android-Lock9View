@@ -2,6 +2,4 @@
 
 ./gradlew -v
 ./gradlew clean
-./gradlew build
-./gradlew install
 ./gradlew bintrayUpload
