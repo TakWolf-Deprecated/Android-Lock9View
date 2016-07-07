@@ -24,13 +24,14 @@ ext {
 }
 
 android {
+
     compileSdkVersion 24
     buildToolsVersion "24.0.0"
 
     defaultConfig {
         minSdkVersion 9
         targetSdkVersion 24
-        versionCode 11
+        versionCode Integer.parseInt(new Date().format("yyyyMMdd"))
         versionName libraryVersion
     }
 
@@ -44,6 +45,7 @@ android {
     lintOptions {
         abortOnError false
     }
+
 }
 
 dependencies {
