@@ -12,7 +12,7 @@ import butterknife.ButterKnife;
 public class NormalActivity extends AppCompatActivity {
 
     @BindView(R.id.lock_9_view)
-    protected Lock9View lock9View;
+    Lock9View lock9View;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

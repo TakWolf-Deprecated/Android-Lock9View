@@ -17,12 +17,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.btn_normal)
-    protected void onBtnNormalClick() {
+    void onBtnNormalClick() {
         startActivity(new Intent(this, NormalActivity.class));
     }
 
     @OnClick(R.id.btn_l_style)
-    protected void onBtnLStyleClick() {
+    void onBtnLStyleClick() {
         startActivity(new Intent(this, LStyleActivity.class));
     }
 
