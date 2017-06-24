@@ -21,13 +21,13 @@ An Android grid lock screen view with a callback interface.
 
 ### Gradle ###
 
-```
+``` gradle
 compile 'com.takwolf.android:lock9view:0.0.11'
 ```
 
 ### Layout example 1 ###
 
-```
+``` xml
 <com.takwolf.android.lock9.Lock9View
     android:id="@+id/lock_9_view"
     android:layout_width="match_parent"
@@ -49,7 +49,7 @@ compile 'com.takwolf.android:lock9view:0.0.11'
 
 ### Layout example 2 ###
 
-```
+``` xml
 <com.takwolf.android.lock9.Lock9View
     android:id="@+id/lock_9_view"
     android:layout_width="match_parent"
@@ -109,7 +109,7 @@ app:lock9_vibrateTime="20"      // default is 20 milliseconds
 
 Also need :
 
-```
+``` xml
 <uses-permission android:name="android.permission.VIBRATE" />
 ```
 
@@ -119,7 +119,7 @@ Also need :
 
 ### Activity ###
 
-```
+``` java
 Lock9View lock9View = (Lock9View) findViewById(R.id.lock_9_view);
 lock9View.setCallBack(new CallBack() {
 
