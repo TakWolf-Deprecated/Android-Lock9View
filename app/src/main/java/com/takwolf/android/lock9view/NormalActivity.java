@@ -1,6 +1,7 @@
 package com.takwolf.android.lock9view;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
@@ -15,7 +16,7 @@ public class NormalActivity extends AppCompatActivity {
     Lock9View lock9View;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_normal);
         ButterKnife.bind(this);
