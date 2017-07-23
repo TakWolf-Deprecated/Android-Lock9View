@@ -52,5 +52,5 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }
 
-apply from: 'https://raw.githubusercontent.com/TakWolf/JCenter-Publish-Script/master/install.gradle'
-apply from: 'https://raw.githubusercontent.com/TakWolf/JCenter-Publish-Script/master/bintray.gradle'
+apply from: 'https://raw.githubusercontent.com/TakWolf/Bintray-Publish-Script-For-Android/master/install.gradle'
+apply from: 'https://raw.githubusercontent.com/TakWolf/Bintray-Publish-Script-For-Android/master/bintray.gradle'
