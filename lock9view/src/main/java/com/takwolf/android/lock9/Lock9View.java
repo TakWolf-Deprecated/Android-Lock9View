@@ -1,6 +1,5 @@
 package com.takwolf.android.lock9;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -10,6 +9,11 @@ import android.graphics.Paint.Style;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Vibrator;
+import android.support.annotation.AttrRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
+import android.support.annotation.StyleRes;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -82,23 +86,23 @@ public class Lock9View extends ViewGroup {
      * 构造函数
      */
 
-    public Lock9View(Context context) {
+    public Lock9View(@NonNull Context context) {
         super(context);
         init(context, null, 0, 0);
     }
 
-    public Lock9View(Context context, AttributeSet attrs) {
+    public Lock9View(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs, 0, 0);
     }
 
-    public Lock9View(Context context, AttributeSet attrs, int defStyleAttr) {
+    public Lock9View(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs, defStyleAttr, 0);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public Lock9View(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public Lock9View(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context, attrs, defStyleAttr, defStyleRes);
     }
@@ -106,7 +110,7 @@ public class Lock9View extends ViewGroup {
     /**
      * 初始化
      */
-    private void init(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    private void init(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
         // 获取定义的属性
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.Lock9View, defStyleAttr, defStyleRes);
 
