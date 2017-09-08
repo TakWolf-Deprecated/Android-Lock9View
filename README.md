@@ -1,11 +1,11 @@
 # Android Lock9View #
 
 [![Build Status](https://travis-ci.org/TakWolf/Android-Lock9View.svg?branch=master)](https://travis-ci.org/TakWolf/Android-Lock9View)
-[![Download](https://api.bintray.com/packages/takwolf/maven/Android-Lock9View/images/download.svg)](https://bintray.com/takwolf/maven/Android-Lock9View/_latestVersion)
-[![Platform](https://img.shields.io/badge/platform-Android-green.svg?style=flat)](https://www.android.com)
-[![API](https://img.shields.io/badge/API-3%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=3)
-[![License](https://img.shields.io/github/license/TakWolf/Android-Lock9View.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0)
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Android--Lock9View-brightgreen.svg?style=flat)](http://android-arsenal.com/details/1/1704)
+[![Bintray](https://img.shields.io/bintray/v/takwolf/maven/Android-Lock9View.svg)](https://bintray.com/takwolf/maven/Android-Lock9View/_latestVersion)
+[![Platform](https://img.shields.io/badge/platform-Android-green.svg)](https://www.android.com)
+[![API](https://img.shields.io/badge/API-3%2B-brightgreen.svg)](https://android-arsenal.com/api?level=3)
+[![License](https://img.shields.io/github/license/TakWolf/Android-Lock9View.svg)](http://www.apache.org/licenses/LICENSE-2.0)
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Android--Lock9View-brightgreen.svg)](http://android-arsenal.com/details/1/1704)
 
 An Android grid lock screen view with a callback interface.
 
