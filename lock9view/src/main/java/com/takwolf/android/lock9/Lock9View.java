@@ -1,22 +1,5 @@
-/*
- * Copyright 2015-2016 TakWolf
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.takwolf.android.lock9;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -26,6 +9,11 @@ import android.graphics.Paint.Style;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Vibrator;
+import android.support.annotation.AttrRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
+import android.support.annotation.StyleRes;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -40,7 +28,8 @@ public class Lock9View extends ViewGroup {
     /**
      * 节点相关定义
      */
-    private List<NodeView> nodeList = new ArrayList<>(); // 已经连线的节点链表
+    private final List<NodeView> nodeList = new ArrayList<>(); // 已经连线的节点链表
+
     private float x; // 当前手指坐标x
     private float y; // 当前手指坐标y
 
@@ -75,46 +64,43 @@ public class Lock9View extends ViewGroup {
     private Paint paint;
 
     /**
-     * 密码构建器
-     */
-    private StringBuilder passwordBuilder = new StringBuilder();
-
-    /**
      * 结果回调监听器接口
      */
-    private CallBack callBack;
+    private GestureCallback callback;
 
-    public interface CallBack {
+    public interface GestureCallback {
 
-        void onFinish(String password);
+        void onNodeConnected(@NonNull int[] numbers);
+
+        void onGestureFinished(@NonNull int[] numbers);
 
     }
 
-    public void setCallBack(CallBack callBack) {
-        this.callBack = callBack;
+    public void setGestureCallback(@Nullable GestureCallback callback) {
+        this.callback = callback;
     }
 
     /**
      * 构造函数
      */
 
-    public Lock9View(Context context) {
+    public Lock9View(@NonNull Context context) {
         super(context);
         init(context, null, 0, 0);
     }
 
-    public Lock9View(Context context, AttributeSet attrs) {
+    public Lock9View(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init(context, attrs, 0, 0);
     }
 
-    public Lock9View(Context context, AttributeSet attrs, int defStyleAttr) {
+    public Lock9View(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs, defStyleAttr, 0);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public Lock9View(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public Lock9View(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context, attrs, defStyleAttr, defStyleRes);
     }
@@ -122,7 +108,7 @@ public class Lock9View extends ViewGroup {
     /**
      * 初始化
      */
-    private void init(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    private void init(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
         // 获取定义的属性
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.Lock9View, defStyleAttr, defStyleRes);
 
@@ -166,7 +152,7 @@ public class Lock9View extends ViewGroup {
     }
 
     /**
-     * TODO 我们让高度等于宽度 - 方法有待验证
+     * 我们让高度等于宽度 - 方法有待验证
      */
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -175,7 +161,7 @@ public class Lock9View extends ViewGroup {
     }
 
     /**
-     * TODO 测量长度
+     * 测量长度
      */
     private int measureSize(int measureSpec) {
         int specMode = MeasureSpec.getMode(measureSpec); // 得到模式
@@ -184,6 +170,7 @@ public class Lock9View extends ViewGroup {
             case MeasureSpec.EXACTLY:
             case MeasureSpec.AT_MOST:
                 return specSize;
+            case MeasureSpec.UNSPECIFIED:
             default:
                 return 0;
         }
@@ -247,12 +234,14 @@ public class Lock9View extends ViewGroup {
                                 // 点亮中间节点
                                 middleNode.setHighLighted(true, true);
                                 nodeList.add(middleNode);
+                                handleOnNodeConnectedCallback();
                             }
                         }
                     }
                     // 点亮当前触摸节点
                     currentNode.setHighLighted(true, false);
                     nodeList.add(currentNode);
+                    handleOnNodeConnectedCallback();
                 }
                 // 有点亮的节点才重绘
                 if (nodeList.size() > 0) {
@@ -261,16 +250,8 @@ public class Lock9View extends ViewGroup {
                 break;
             case MotionEvent.ACTION_UP:
                 if (nodeList.size() > 0) { // 有点亮的节点
-                    // 回调结果
-                    if (callBack != null) {
-                        // 生成密码
-                        passwordBuilder.setLength(0);
-                        for (NodeView nodeView : nodeList) {
-                            passwordBuilder.append(nodeView.getNum());
-                        }
-                        // callback
-                        callBack.onFinish(passwordBuilder.toString());
-                    }
+                    // 手势完成
+                    handleOnGestureFinishedCallback();
                     // 清除状态
                     nodeList.clear();
                     for (int n = 0; n < getChildCount(); n++) {
@@ -283,6 +264,37 @@ public class Lock9View extends ViewGroup {
                 break;
         }
         return true;
+    }
+
+    /**
+     * 生成当前数字列表
+     */
+    @NonNull
+    private int[] generateCurrentNumbers() {
+        int[] numbers = new int[nodeList.size()];
+        for (int i = 0; i < nodeList.size(); i++) {
+            NodeView node = nodeList.get(i);
+            numbers[i] = node.getNumber();
+        }
+        return numbers;
+    }
+
+    /**
+     * 每次连接一个点
+     */
+    private void handleOnNodeConnectedCallback() {
+        if (callback != null) {
+            callback.onNodeConnected(generateCurrentNumbers());
+        }
+    }
+
+    /**
+     * 手势完成
+     */
+    private void handleOnGestureFinishedCallback() {
+        if (callback != null) {
+            callback.onGestureFinished(generateCurrentNumbers());
+        }
     }
 
     /**
@@ -323,17 +335,18 @@ public class Lock9View extends ViewGroup {
     /**
      * 获取两个Node中间的Node，返回null表示没有中间node
      */
-    private NodeView getNodeBetween(NodeView na, NodeView nb) {
-        if (na.getNum() > nb.getNum()) { // 保证 na 小于 nb
+    @Nullable
+    private NodeView getNodeBetween(@NonNull NodeView na, @NonNull NodeView nb) {
+        if (na.getNumber() > nb.getNumber()) { // 保证 na 小于 nb
             NodeView nc = na;
             na = nb;
             nb = nc;
         }
-        if (na.getNum() % 3 == 1 && nb.getNum() - na.getNum() == 2) { // 水平的情况
-            return (NodeView) getChildAt(na.getNum());
-        } else if (na.getNum() <= 3 && nb.getNum() - na.getNum() == 6) { // 垂直的情况
-            return (NodeView) getChildAt(na.getNum() + 2);
-        } else if ((na.getNum() == 1 && nb.getNum() == 9) || (na.getNum() == 3 && nb.getNum() == 7)) { // 倾斜的情况
+        if (na.getNumber() % 3 == 1 && nb.getNumber() - na.getNumber() == 2) { // 水平的情况
+            return (NodeView) getChildAt(na.getNumber());
+        } else if (na.getNumber() <= 3 && nb.getNumber() - na.getNumber() == 6) { // 垂直的情况
+            return (NodeView) getChildAt(na.getNumber() + 2);
+        } else if ((na.getNumber() == 1 && nb.getNumber() == 9) || (na.getNumber() == 3 && nb.getNumber() == 7)) { // 倾斜的情况
             return (NodeView) getChildAt(4);
         } else {
             return null;
@@ -343,27 +356,27 @@ public class Lock9View extends ViewGroup {
     /**
      * 节点描述类
      */
-    private class NodeView extends View {
+    private final class NodeView extends View {
 
-        private int num;
+        private int number;
         private boolean highLighted = false;
 
-        @SuppressWarnings("deprecation")
-        public NodeView(Context context, int num) {
+        NodeView(Context context, int number) {
             super(context);
-            this.num = num;
+            this.number = number;
+            //noinspection deprecation
             setBackgroundDrawable(nodeSrc);
         }
 
-        public boolean isHighLighted() {
+        boolean isHighLighted() {
             return highLighted;
         }
 
-        @SuppressWarnings("deprecation")
-        public void setHighLighted(boolean highLighted, boolean isMid) {
+        void setHighLighted(boolean highLighted, boolean isMid) {
             if (this.highLighted != highLighted) {
                 this.highLighted = highLighted;
                 if (nodeOnSrc != null) { // 没有设置高亮图片则不变化
+                    //noinspection deprecation
                     setBackgroundDrawable(highLighted ? nodeOnSrc : nodeSrc);
                 }
                 if (nodeOnAnim != 0) { // 播放动画
@@ -381,16 +394,16 @@ public class Lock9View extends ViewGroup {
             }
         }
 
-        public int getCenterX() {
+        int getCenterX() {
             return (getLeft() + getRight()) / 2;
         }
 
-        public int getCenterY() {
+        int getCenterY() {
             return (getTop() + getBottom()) / 2;
         }
 
-        public int getNum() {
-            return num;
+        int getNumber() {
+            return number;
         }
 
     }

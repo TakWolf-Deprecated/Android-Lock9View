@@ -2,15 +2,15 @@ apply plugin: 'com.android.application'
 
 android {
 
-    compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    compileSdkVersion 25
+    buildToolsVersion '25.0.3'
 
     defaultConfig {
         applicationId "com.takwolf.android.lock9"
         minSdkVersion 9
-        targetSdkVersion 23
-        versionCode 11
-        versionName "0.0.11"
+        targetSdkVersion 25
+        versionCode Integer.parseInt(new Date().format('yyyyMMdd'))
+        versionName "0.1.0"
     }
 
     buildTypes {
@@ -20,12 +20,18 @@ android {
         }
     }
 
+    lintOptions {
+        abortOnError false
+    }
+
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:23.2.0'
-    compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.takwolf.android:lock9view:0.0.11'
-    // compile project(':lock9view')
+    compile 'com.android.support:design:25.3.1'
+
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+    compile project(':lock9view')
 }
