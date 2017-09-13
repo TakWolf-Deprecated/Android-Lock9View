@@ -22,7 +22,7 @@ An Android grid lock screen view with a callback interface.
 ### Gradle ###
 
 ``` gradle
-compile 'com.takwolf.android:lock9view:0.0.11'
+compile 'com.takwolf.android:lock9view:0.1.0'
 ```
 
 ### Layout example 1 ###
@@ -113,23 +113,52 @@ Also need :
 <uses-permission android:name="android.permission.VIBRATE" />
 ```
 
-### Error status ###
-
-// TODO
-
 ### Activity ###
 
 ``` java
 Lock9View lock9View = (Lock9View) findViewById(R.id.lock_9_view);
-lock9View.setCallBack(new CallBack() {
+lock9View.setGestureCallback(new Lock9View.GestureCallback() {
 
     @Override
-    public void onFinish(String password) {
-        Toast.makeText(MainActivity.this, password, Toast.LENGTH_SHORT).show();
+    public void onNodeConnected(@NonNull int[] numbers) {
+        // Do something
+    }
+
+    @Override
+    public void onGestureFinished(@NonNull int[] numbers) {
+        // Do something
     }
 
 });
 ```
+
+## Change Log ##
+ 
+### 0.1.0 ###
+
+- This is a broken api version.
+
+- Extend gesture callback.
+
+## Limitations ##
+
+这个项目很长时间出于非活跃状态，主要是手势解锁布局实现上存在一些限制。
+
+一个完整的手势解锁布局，应该包括的功能有：
+
+- 基本的手势连线
+
+- 连接节点的动画
+
+- 不同情况下的状态以及样式（常规、正确、错误状态时节点和连线颜色，以及停留时间）
+
+- 布局策略（节点数量、触摸范围、连线和结点的层级关系）
+
+- 反馈（连接节点时显示涟漪效果或者声音提示或者震动反馈）
+
+我目前没有找到一个好的方法能够完美并且优雅的实现上面所有功能的扩展。
+
+自己的几个关于手势解锁需求的项目，都是在这个基础上做了 UI 上的定制化修改。
 
 ## Author ##
 
