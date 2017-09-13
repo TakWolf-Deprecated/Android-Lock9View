@@ -10,7 +10,7 @@ android {
         minSdkVersion 9
         targetSdkVersion 25
         versionCode Integer.parseInt(new Date().format('yyyyMMdd'))
-        versionName "0.0.11"
+        versionName "0.1.0"
     }
 
     buildTypes {
