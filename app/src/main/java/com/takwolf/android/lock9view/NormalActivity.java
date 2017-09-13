@@ -7,6 +7,8 @@ import android.widget.Toast;
 
 import com.takwolf.android.lock9.Lock9View;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -23,11 +25,20 @@ public class NormalActivity extends AppCompatActivity {
 
         lock9View.setCallBack(new Lock9View.CallBack() {
 
+
             @Override
-            public void onFinish(String password) {
-                Toast.makeText(NormalActivity.this, password, Toast.LENGTH_SHORT).show();
+            public void onFinish(List<String> passwordList) {
+                for (String s : passwordList) {
+                    System.out.println(s);
+                }
             }
 
+            @Override
+            public void onPassedPoint(List<String> nodeList) {
+                for (String s : nodeList) {
+                    System.out.println(s);
+                }
+            }
         });
     }
 

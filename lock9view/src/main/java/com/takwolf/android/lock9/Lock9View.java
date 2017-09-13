@@ -29,6 +29,8 @@ public class Lock9View extends ViewGroup {
      * 节点相关定义
      */
     private List<NodeView> nodeList = new ArrayList<>(); // 已经连线的节点链表
+
+    ArrayList<String> nodeViewsCopy = new ArrayList<>();
     private float x; // 当前手指坐标x
     private float y; // 当前手指坐标y
 
@@ -63,18 +65,15 @@ public class Lock9View extends ViewGroup {
     private Paint paint;
 
     /**
-     * 密码构建器
-     */
-    private StringBuilder passwordBuilder = new StringBuilder();
-
-    /**
      * 结果回调监听器接口
      */
     private CallBack callBack;
 
     public interface CallBack {
 
-        void onFinish(String password);
+        void onFinish(List<String> passwordList);
+
+        void onPassedPoint(List<String> nodeList);
 
     }
 
@@ -235,12 +234,15 @@ public class Lock9View extends ViewGroup {
                                 // 点亮中间节点
                                 middleNode.setHighLighted(true, true);
                                 nodeList.add(middleNode);
+
+                                onPointPassed();
                             }
                         }
                     }
                     // 点亮当前触摸节点
                     currentNode.setHighLighted(true, false);
                     nodeList.add(currentNode);
+                    onPointPassed();
                 }
                 // 有点亮的节点才重绘
                 if (nodeList.size() > 0) {
@@ -252,12 +254,7 @@ public class Lock9View extends ViewGroup {
                     // 回调结果
                     if (callBack != null) {
                         // 生成密码
-                        passwordBuilder.setLength(0);
-                        for (NodeView nodeView : nodeList) {
-                            passwordBuilder.append(nodeView.getNum());
-                        }
-                        // callback
-                        callBack.onFinish(passwordBuilder.toString());
+                        onFinish();
                     }
                     // 清除状态
                     nodeList.clear();
@@ -271,6 +268,32 @@ public class Lock9View extends ViewGroup {
                 break;
         }
         return true;
+    }
+
+    /**
+     * 生成密码
+     */
+    private void onFinish() {
+        nodeViewsCopy.clear();
+        for (NodeView nodeView : nodeList) {
+            nodeViewsCopy.add(nodeView.getNum() + "");
+        }
+
+        // callback
+        callBack.onFinish(nodeViewsCopy);
+    }
+
+    /**
+     * 当通过一个点的时候会调用该方法
+     */
+    private void onPointPassed() {
+        nodeViewsCopy.clear();
+
+        for (NodeView nodeView : nodeList) {
+            nodeViewsCopy.add(nodeView.getNum() + "");
+        }
+
+        callBack.onPassedPoint(nodeViewsCopy);
     }
 
     /**
@@ -331,7 +354,7 @@ public class Lock9View extends ViewGroup {
     /**
      * 节点描述类
      */
-    private class NodeView extends View {
+    public class NodeView extends View {
 
         private int num;
         private boolean highLighted = false;
