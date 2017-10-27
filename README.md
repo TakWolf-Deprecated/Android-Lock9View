@@ -22,7 +22,7 @@ An Android grid lock screen view with a callback interface.
 ### Gradle ###
 
 ``` gradle
-compile 'com.takwolf.android:lock9view:0.1.0'
+implementation 'com.takwolf.android:lock9view:0.1.1'
 ```
 
 ### Layout example 1 ###
