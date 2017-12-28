@@ -10,7 +10,7 @@ ext {
     groupId = 'com.takwolf.android'
     artifactId = 'lock9view'
 
-    libraryVersion = '0.1.2'
+    libraryVersion = '0.1.3'
     libraryName = 'Android Lock9View'
     libraryDescription = 'An Android grid lock screen view with a callback interface.'
 
@@ -49,7 +49,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:support-annotations:27.0.2'
+    compileOnly 'com.android.support:support-annotations:27.0.2'
 }
 
 apply from: 'https://raw.githubusercontent.com/TakWolf/Bintray-Publish-Script-For-Android/master/install.gradle'
