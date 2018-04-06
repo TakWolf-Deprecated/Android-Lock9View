@@ -49,7 +49,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    compileOnly 'com.android.support:support-annotations:27.1.0'
+    compileOnly 'com.android.support:support-annotations:27.1.1'
 }
 
 apply from: 'https://raw.githubusercontent.com/TakWolf/Bintray-Publish-Script-For-Android/master/install.gradle'
