@@ -2,12 +2,12 @@ apply plugin: 'com.android.application'
 
 android {
 
-    compileSdkVersion 27
+    compileSdkVersion 28
 
     defaultConfig {
         applicationId 'com.takwolf.android.lock9'
         minSdkVersion 14
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode Integer.valueOf(new Date().format('yyyyMMdd', TimeZone.getTimeZone('UTC')))
         versionName '0.1.0'
     }
@@ -27,7 +27,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support:design:28.0.0'
 
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
