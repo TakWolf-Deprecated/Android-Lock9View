@@ -52,5 +52,5 @@ dependencies {
     compileOnly 'com.android.support:support-annotations:28.0.0'
 }
 
-apply from: 'https://raw.githubusercontent.com/TakWolf/Bintray-Publish-Script-For-Android/master/install.gradle'
-apply from: 'https://raw.githubusercontent.com/TakWolf/Bintray-Publish-Script-For-Android/master/bintray.gradle'
+apply from: 'https://raw.githubusercontent.com/TakWolf/Android-Bintray-Publish-Demo/master/script/install.gradle'
+apply from: 'https://raw.githubusercontent.com/TakWolf/Android-Bintray-Publish-Demo/master/script/bintray.gradle'
