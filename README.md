@@ -1,4 +1,24 @@
-# Android Lock9View #
+# Limitations
+
+这个项目很长时间出于非活跃状态，主要是手势解锁布局实现上存在一些限制。
+
+一个完整的手势解锁布局，应该包括的功能有：
+
+- 基本的手势连线
+
+- 连接节点的动画
+
+- 不同情况下的状态以及样式（常规、正确、错误状态时节点和连线颜色，以及停留时间）
+
+- 布局策略（节点数量、触摸范围、连线和结点的层级关系）
+
+- 反馈（连接节点时显示涟漪效果或者声音提示或者震动反馈）
+
+我目前没有找到一个好的方法能够完美并且优雅的实现上面所有功能的扩展。
+
+自己的几个关于手势解锁需求的项目，都是在这个基础上做了 UI 上的定制化修改。
+
+# Android Lock9View
 
 [![Build Status](https://travis-ci.org/TakWolf/Android-Lock9View.svg?branch=master)](https://travis-ci.org/TakWolf/Android-Lock9View)
 [![Bintray](https://api.bintray.com/packages/takwolf/maven/Android-Lock9View/images/download.svg)](https://bintray.com/takwolf/maven/Android-Lock9View/_latestVersion)
@@ -9,23 +29,23 @@
 
 An Android grid lock screen view with a callback interface.
 
-## ScreenShot ##
+## ScreenShot
 
 ![Screenshot](art/screenshot.png)
 
-## Demo ##
+## Demo
 
 [![Google Play Store](art/git_it_on_google_play.png)](https://play.google.com/store/apps/details?id=com.takwolf.android.lock9)
 
-## Usage ##
+## Usage
 
-### Gradle ###
+### Gradle
 
 ``` gradle
 implementation 'com.takwolf.android:lock9view:0.1.3'
 ```
 
-### Layout example 1 ###
+### Layout example 1
 
 ``` xml
 <com.takwolf.android.lock9.Lock9View
@@ -47,7 +67,7 @@ implementation 'com.takwolf.android:lock9view:0.1.3'
 
 ![layout_1](art/layout_1.png)
 
-### Layout example 2 ###
+### Layout example 2
 
 ``` xml
 <com.takwolf.android.lock9.Lock9View
@@ -76,7 +96,7 @@ implementation 'com.takwolf.android:lock9view:0.1.3'
 
 **The nodes will be layout on the center of 9 average areas.**
 
-### Touch area ###
+### Touch area
 
 If you want to draw a small node with a bigger touch area, please user :
 
@@ -86,13 +106,13 @@ app:lock9_nodeAreaExpand="24dp"  // default is 0
 
 touchArea = lock9_nodeSize + lock9_nodeAreaExpand * 2
 
-### Animation ###
+### Animation
 
 ```
 app:lock9_nodeOnAnim="@anim/node_on_2"
 ```
 
-### AutoLink ###
+### AutoLink
 
 ![auto_link](art/auto_link.png)
 
@@ -100,7 +120,7 @@ app:lock9_nodeOnAnim="@anim/node_on_2"
 app:lock9_autoLink="true" // default is false
 ```
 
-### Vibrate ###
+### Vibrate
 
 ```
 app:lock9_enableVibrate="true"  // default is false
@@ -113,7 +133,7 @@ Also need :
 <uses-permission android:name="android.permission.VIBRATE" />
 ```
 
-### Activity ###
+### Activity
 
 ``` java
 Lock9View lock9View = (Lock9View) findViewById(R.id.lock_9_view);
@@ -132,43 +152,15 @@ lock9View.setGestureCallback(new Lock9View.GestureCallback() {
 });
 ```
 
-## Change Log ##
+## Change Log
  
-### 0.1.0 ###
+### 0.1.0
 
 - This is a broken api version.
 
 - Extend gesture callback.
 
-## Limitations ##
-
-这个项目很长时间出于非活跃状态，主要是手势解锁布局实现上存在一些限制。
-
-一个完整的手势解锁布局，应该包括的功能有：
-
-- 基本的手势连线
-
-- 连接节点的动画
-
-- 不同情况下的状态以及样式（常规、正确、错误状态时节点和连线颜色，以及停留时间）
-
-- 布局策略（节点数量、触摸范围、连线和结点的层级关系）
-
-- 反馈（连接节点时显示涟漪效果或者声音提示或者震动反馈）
-
-我目前没有找到一个好的方法能够完美并且优雅的实现上面所有功能的扩展。
-
-自己的几个关于手势解锁需求的项目，都是在这个基础上做了 UI 上的定制化修改。
-
-## Author ##
-
-TakWolf
-
-[takwolf@foxmail.com](mailto:takwolf@foxmail.com)
-
-[http://takwolf.com](http://takwolf.com)
-
-## License ##
+## License
 
 ```
 Copyright 2014 TakWolf
